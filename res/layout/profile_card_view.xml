@@ -10,83 +10,59 @@
         android:orientation="horizontal"
         android:layout_margin="@dimen/margin_standard">
 
-        <LinearLayout
-            android:layout_width="5dp"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:background="?attr/colorGPrimaryDark">
+        <pl.Guzooo.WoliumSpid.Elements.VolumeBar
+            android:id="@+id/volume_bar_1"
+            android:layout_width="3dp"
+            android:layout_height="match_parent"/>
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="15"/>
+        <pl.Guzooo.WoliumSpid.Elements.VolumeBar
+            android:id="@+id/volume_bar_2"
+            android:layout_width="3dp"
+            android:layout_height="match_parent"/>
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:backgroundTint="?attr/colorGAccent"/>
-        </LinearLayout>
+        <pl.Guzooo.WoliumSpid.Elements.VolumeBar
+            android:id="@+id/volume_bar_3"
+            android:layout_width="3dp"
+            android:layout_height="match_parent"/>
 
-        <LinearLayout
-            android:layout_width="5dp"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_marginLeft="1dp"
-            android:background="?attr/colorGPrimaryDark">
+        <pl.Guzooo.WoliumSpid.Elements.VolumeBar
+            android:id="@+id/volume_bar_4"
+            android:layout_width="3dp"
+            android:layout_height="match_parent"/>
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="10"/>
+        <pl.Guzooo.WoliumSpid.Elements.VolumeBar
+            android:id="@+id/volume_bar_5"
+            android:layout_width="3dp"
+            android:layout_height="match_parent"/>
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="5"
-                android:backgroundTint="?attr/colorGAccent"/>
-        </LinearLayout>
+        <pl.Guzooo.WoliumSpid.Elements.VolumeBar
+            android:id="@+id/volume_bar_6"
+            android:layout_width="3dp"
+            android:layout_height="match_parent"/>
 
-        <LinearLayout
-            android:layout_width="5dp"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_marginLeft="1dp"
-            android:background="?attr/colorGPrimaryDark">
+        <pl.Guzooo.WoliumSpid.Elements.VolumeBar
+            android:id="@+id/volume_bar_7"
+            android:layout_width="3dp"
+            android:layout_height="match_parent"/>
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="8"/>
+        <pl.Guzooo.WoliumSpid.Elements.VolumeBar
+            android:id="@+id/volume_bar_8"
+            android:layout_width="3dp"
+            android:layout_height="match_parent"/>
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="7"
-                android:backgroundTint="?attr/colorGAccent"/>
-        </LinearLayout>
+        <pl.Guzooo.WoliumSpid.Elements.VolumeBar
+            android:id="@+id/volume_bar_9"
+            android:layout_width="3dp"
+            android:layout_height="match_parent"/>
 
-        <LinearLayout
-            android:layout_width="5dp"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_marginLeft="1dp"
-            android:background="?attr/colorGPrimaryDark">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"/>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="15"
-                android:backgroundTint="?attr/colorGAccent"/>
-        </LinearLayout>
+        <pl.Guzooo.WoliumSpid.Elements.VolumeBar
+            android:id="@+id/volume_bar_10"
+            android:layout_width="3dp"
+            android:layout_height="match_parent"/>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/title"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_gravity="center"
@@ -94,9 +70,10 @@
             android:layout_margin="@dimen/margin_standard"/>
 
         <ImageView
+            android:id="@+id/play"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_close"
+            android:src="@drawable/ic_play_arrow"
             style="@style/ClickableImage"/>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

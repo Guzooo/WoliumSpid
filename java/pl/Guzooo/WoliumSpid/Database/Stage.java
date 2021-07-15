@@ -8,16 +8,19 @@ public class Stage extends DatabaseObject{
     public static final String PROFILE_ID = "ProfileId";
     public static final String VOLUME = "Volume";
     public static final String SPEED = "Speed";
+    public static final String ORDER = "Order";
     public static final String[] ON_CURSOR = {
             Database.ID,
             PROFILE_ID,
             VOLUME,
-            SPEED
+            SPEED,
+            ORDER
     };
 
     private int profileId;
     private int volume;
     private int speed;
+    private int order;
 
     @Override
     public String[] onCursor() {
@@ -34,12 +37,13 @@ public class Stage extends DatabaseObject{
         template(cursor.getInt(0),
                 cursor.getInt(1),
                 cursor.getInt(2),
-                cursor.getInt(3));
+                cursor.getInt(3),
+                cursor.getInt(4));
     }
 
     @Override
     public void setVariablesEmpty() {
-        template(0, 0, 0, 0);
+        template(0, 0, 0, 0, 0);
     }
 
     @Override
@@ -48,6 +52,7 @@ public class Stage extends DatabaseObject{
         contentValues.put(PROFILE_ID, profileId);
         contentValues.put(VOLUME, volume);
         contentValues.put(SPEED, speed);
+        contentValues.put(ORDER, order);
         return contentValues;
     }
 
@@ -75,13 +80,23 @@ public class Stage extends DatabaseObject{
         this.speed = speed;
     }
 
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
+    }
+
     private void template(int id,
                           int profileId,
                           int volume,
-                          int speed){
+                          int speed,
+                          int order){
         this.id = id;
         this.profileId = profileId;
         this.volume = volume;
         this.speed = speed;
+        this.order = order;
     }
 }

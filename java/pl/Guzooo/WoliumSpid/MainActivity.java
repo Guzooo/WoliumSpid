@@ -14,8 +14,22 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        View v = findViewById(R.id.logo_g);
-        BusinessCard bc = findViewById(R.id.business_card_g);
-        bc.setOpenerView(v);
+        initialization();
+        setBusinessCard();
+        setProfilesRecycler();
+    }
+
+    private void initialization(){
+
+    }
+
+    private void setBusinessCard(){
+        View logo = findViewById(R.id.logo_g);
+        BusinessCard businessCard = findViewById(R.id.business_card_g);
+        businessCard.setOpenerView(logo);
+    }
+
+    private void setProfilesRecycler(){
+
     }
 }
