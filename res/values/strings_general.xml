@@ -3,4 +3,6 @@
     <string name="year_of_release" translatable="false">2021</string>
 
     <string name="profile">Profile %1$d</string>
+
+    <string name="add_profile">Add Profile</string>
 </resources>
