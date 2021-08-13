@@ -1,59 +1,38 @@
 package pl.Guzooo.WoliumSpid.Database;
 
-import android.content.ContentValues;
-import android.database.Cursor;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
-public class Stage extends DatabaseObject{
-    public static final String DATABASE_NAME = "Stage";
-    public static final String PROFILE_ID = "ProfileId";
-    public static final String VOLUME = "Volume";
-    public static final String SPEED = "Speed";
-    public static final String ORDER = "Order";
-    public static final String[] ON_CURSOR = {
-            Database.ID,
-            PROFILE_ID,
-            VOLUME,
-            SPEED,
-            ORDER
-    };
+import static pl.Guzooo.WoliumSpid.Database.Stage.DATABASE_NAME;
 
+@Entity(tableName = DATABASE_NAME)
+public class Stage implements Comparable{
+    public static final String DATABASE_NAME = "stages";
+    public static final String ID = "_id";
+    public static final String PROFILE_ID = "profile_id";
+    public static final String VOLUME = "volume";
+    public static final String SPEED = "speed";
+    public static final String ORDER = "orderr";
+
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = ID)
+    private int id;
+    @ColumnInfo(name = PROFILE_ID)
     private int profileId;
+    @ColumnInfo(name = VOLUME)
     private int volume;
+    @ColumnInfo(name = SPEED)
     private int speed;
+    @ColumnInfo(name = ORDER)
     private int order;
 
-    @Override
-    public String[] onCursor() {
-        return ON_CURSOR;
+    public int getId() {
+        return id;
     }
 
-    @Override
-    public String databaseName() {
-        return DATABASE_NAME;
-    }
-
-    @Override
-    public void setVariablesOfCursor(Cursor cursor) {
-        template(cursor.getInt(0),
-                cursor.getInt(1),
-                cursor.getInt(2),
-                cursor.getInt(3),
-                cursor.getInt(4));
-    }
-
-    @Override
-    public void setVariablesEmpty() {
-        template(0, 0, 0, 0, 0);
-    }
-
-    @Override
-    protected ContentValues getContentValues() {
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(PROFILE_ID, profileId);
-        contentValues.put(VOLUME, volume);
-        contentValues.put(SPEED, speed);
-        contentValues.put(ORDER, order);
-        return contentValues;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getProfileId() {
@@ -88,15 +67,9 @@ public class Stage extends DatabaseObject{
         this.order = order;
     }
 
-    private void template(int id,
-                          int profileId,
-                          int volume,
-                          int speed,
-                          int order){
-        this.id = id;
-        this.profileId = profileId;
-        this.volume = volume;
-        this.speed = speed;
-        this.order = order;
+    @Override
+    public int compareTo(Object o) {
+        Stage otherStage = (Stage) o;
+        return Integer.compare(order, otherStage.order);
     }
 }

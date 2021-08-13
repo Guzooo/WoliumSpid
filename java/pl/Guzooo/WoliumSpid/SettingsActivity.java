@@ -15,7 +15,6 @@ public class SettingsActivity extends GActivity {
         setContentView(R.layout.activity_settings);
 
         setFullScreen();
-        setActionBar();
         setFragment();
     }
 
@@ -23,10 +22,6 @@ public class SettingsActivity extends GActivity {
         View mainScroll = findViewById(R.id.main_scroll);
         FullScreenUtils.setUIVisibility(mainScroll);
         FullScreenUtils.setPaddings(mainScroll, this);
-    }
-
-    private void setActionBar(){
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void setFragment(){

@@ -1,14 +1,19 @@
 package pl.Guzooo.WoliumSpid.Adapters;
 
+import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import pl.Guzooo.WoliumSpid.Database.Profile;
+import pl.Guzooo.WoliumSpid.Database.Stage;
 import pl.Guzooo.WoliumSpid.Elements.VolumeBar;
 import pl.Guzooo.WoliumSpid.R;
+import pl.Guzooo.WoliumSpid.Utils.VolumeUtils;
 
 public class ViewHolderProfile extends RecyclerView.ViewHolder {
 
@@ -22,18 +27,23 @@ public class ViewHolderProfile extends RecyclerView.ViewHolder {
         title = v.findViewById(R.id.title);
         play = v.findViewById(R.id.play);
     }
-
-    public void setVolumeBar(int volumeBarNumber, int volume){
-        volumeBars.get(volumeBarNumber);//TODO: ustaw wartość na volume;
-
+    
+    public void setVolumeBars(List<Stage> stages){
+        Context context = itemView.getContext();
+        int maxVolume = VolumeUtils.getVolumeMax(context);
+        for(int i = 0; i < volumeBars.size() && i < stages.size(); i++){
+            VolumeBar volumeBar = volumeBars.get(i);
+            Stage stage = stages.get(i);
+            int volume = stage.getVolume();
+            volumeBar.setVisibility(View.VISIBLE);
+            volumeBar.setLevel(volume , maxVolume);
+        }
     }
-
-    public void setVolumeBarGone(int volumeBarNumber){
-        volumeBars.get(volumeBarNumber).setVisibility(View.GONE);
-    }
-
-    public void setTitle(String title) {
-        this.title.setText(title);
+    
+    public void setTitle(Profile profile){
+        Context context = itemView.getContext();
+        String name = profile.getName(context);
+        title.setText(name);
     }
 
     public void setOnClickMainViewListener(View.OnClickListener listener){
@@ -49,7 +59,7 @@ public class ViewHolderProfile extends RecyclerView.ViewHolder {
         setVolumeBarsVisibility();
     }
 
-    private void  addVolumeBars(View v){
+    private void addVolumeBars(View v){
         volumeBars.add(v.findViewById(R.id.volume_bar_1));
         volumeBars.add(v.findViewById(R.id.volume_bar_2));
         volumeBars.add(v.findViewById(R.id.volume_bar_3));
@@ -64,6 +74,6 @@ public class ViewHolderProfile extends RecyclerView.ViewHolder {
 
     private void setVolumeBarsVisibility(){
         for(VolumeBar volumeBar : volumeBars)
-            volumeBar.setVisibility(View.VISIBLE);
+            volumeBar.setVisibility(View.INVISIBLE);
     }
 }

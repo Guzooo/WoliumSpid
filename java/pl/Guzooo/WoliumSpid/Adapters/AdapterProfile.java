@@ -4,21 +4,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import pl.Guzooo.WoliumSpid.Database.Profile;
+import pl.Guzooo.WoliumSpid.Database.ProfileWithStages;
 import pl.Guzooo.WoliumSpid.Database.Stage;
 import pl.Guzooo.WoliumSpid.R;
 
-public class AdapterProfile extends RecyclerView.Adapter<ViewHolderProfile> {
+public class AdapterProfile extends ListAdapter<ProfileWithStages, ViewHolderProfile> {
 
     private ProfileListener listener;
-    private ArrayList<Profile> profiles = new ArrayList<>();
 
-    AdapterProfile (ArrayList<Profile> profiles, ProfileListener listener){
-        this.profiles = profiles;
+    public interface ProfileListener{
+        void onClickMainView(int id);
+        void onClickPlay(ProfileWithStages profileWithStages);
+    }
+
+    public AdapterProfile(ProfileListener listener) {
+        super(getDiffCallback());
         this.listener = listener;
     }
 
@@ -30,41 +36,50 @@ public class AdapterProfile extends RecyclerView.Adapter<ViewHolderProfile> {
 
     @Override
     public void onBindViewHolder(ViewHolderProfile holder, int position) {
-        Profile profile = profiles.get(position);
-        setVolumeBars(profile, holder);
-        setTitle(profile, holder);
-        setClickListeners(profile, holder);
+        ProfileWithStages profileWithStages = getItem(position);
+        Profile profile = profileWithStages.getProfile();
+        List<Stage> stages = profileWithStages.getStages();
+        holder.setVolumeBars(stages);
+        holder.setTitle(profile);
+        setClickListeners(profileWithStages, holder);
     }
 
-    @Override
-    public int getItemCount() {
-        return profiles.size();
+    private static DiffUtil.ItemCallback<ProfileWithStages> getDiffCallback(){
+        return new DiffUtil.ItemCallback<ProfileWithStages>() {
+            @Override
+            public boolean areItemsTheSame(ProfileWithStages oldItem, ProfileWithStages newItem) {
+                Profile oldProfile = oldItem.getProfile();
+                Profile newProfile = newItem.getProfile();
+                if(oldProfile.getId() == newProfile.getId())
+                    return true;
+                return false;
+            }
+
+            @Override
+            public boolean areContentsTheSame(ProfileWithStages oldItem, ProfileWithStages newItem) {
+                Profile oldProfile = oldItem.getProfile();
+                Profile newProfile = newItem.getProfile();
+                List<Stage> oldStages = oldItem.getStages();
+                List<Stage> newStages = newItem.getStages();
+                if(oldProfile.getName().equals(newProfile.getName()))
+                    if(oldProfile.getName().equals(""))
+                        if(oldProfile.getId() != newProfile.getId())
+                            return false;
+                if(oldStages.size() != newStages.size())
+                    return false;
+                for(int i = 0; i < 10 && i < oldStages.size(); i++){
+                    if(oldStages.get(i).getVolume() != newStages.get(i).getVolume())
+                        return false;
+                }
+                return true;
+            }
+        };
     }
 
-    private interface ProfileListener{
-        void onClickMainView(int id);
-        void onClickPlay(Profile profile);
-    }
-
-    private void setVolumeBars(Profile profile, ViewHolderProfile holder){
-        for(int i = 0; i < 10; i++){
-            Stage stage = profile.getStage(i);
-            if(stage != null) {
-                int volume = stage.getVolume();
-                holder.setVolumeBar(i, volume);
-            } else
-                holder.setVolumeBarGone(i);
-        }
-    }
-
-    private void setTitle(Profile profile, ViewHolderProfile holder){
-        String title = profile.getName(holder.itemView.getContext());
-        holder.setTitle(title);
-    }
-
-    private void setClickListeners(Profile profile, ViewHolderProfile holder){
-        View.OnClickListener onClickMainViewListener = getOnClickMainViewListener(profile.getId());
-        View.OnClickListener onClickPlayListener = getOnClickPlayListener(profile);
+    private void setClickListeners(ProfileWithStages profileWithStages, ViewHolderProfile holder){
+        int id = profileWithStages.getProfile().getId();
+        View.OnClickListener onClickMainViewListener = getOnClickMainViewListener(id);
+        View.OnClickListener onClickPlayListener = getOnClickPlayListener(profileWithStages);
         holder.setOnClickMainViewListener(onClickMainViewListener);
         holder.setOnClickPlayListener(onClickPlayListener);
     }
@@ -78,11 +93,11 @@ public class AdapterProfile extends RecyclerView.Adapter<ViewHolderProfile> {
         };
     }
 
-    private View.OnClickListener getOnClickPlayListener(Profile profile){
+    private View.OnClickListener getOnClickPlayListener(ProfileWithStages profileWithStages){
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.onClickPlay(profile);
+                listener.onClickPlay(profileWithStages);
             }
         };
     }

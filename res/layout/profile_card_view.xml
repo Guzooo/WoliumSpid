@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     style="@style/CardViewStandard">
@@ -12,52 +13,70 @@
 
         <pl.Guzooo.WoliumSpid.Elements.VolumeBar
             android:id="@+id/volume_bar_1"
-            android:layout_width="3dp"
-            android:layout_height="match_parent"/>
+            android:layout_width="@dimen/vb_width"
+            android:layout_marginRight="@dimen/vb_margin"
+            android:layout_marginEnd="@dimen/vb_margin"
+            android:layout_height="match_parent" />
 
         <pl.Guzooo.WoliumSpid.Elements.VolumeBar
             android:id="@+id/volume_bar_2"
-            android:layout_width="3dp"
+            android:layout_width="@dimen/vb_width"
+            android:layout_marginRight="@dimen/vb_margin"
+            android:layout_marginEnd="@dimen/vb_margin"
             android:layout_height="match_parent"/>
 
         <pl.Guzooo.WoliumSpid.Elements.VolumeBar
             android:id="@+id/volume_bar_3"
-            android:layout_width="3dp"
+            android:layout_width="@dimen/vb_width"
+            android:layout_marginRight="@dimen/vb_margin"
+            android:layout_marginEnd="@dimen/vb_margin"
             android:layout_height="match_parent"/>
 
         <pl.Guzooo.WoliumSpid.Elements.VolumeBar
             android:id="@+id/volume_bar_4"
-            android:layout_width="3dp"
+            android:layout_width="@dimen/vb_width"
+            android:layout_marginRight="@dimen/vb_margin"
+            android:layout_marginEnd="@dimen/vb_margin"
             android:layout_height="match_parent"/>
 
         <pl.Guzooo.WoliumSpid.Elements.VolumeBar
             android:id="@+id/volume_bar_5"
-            android:layout_width="3dp"
+            android:layout_width="@dimen/vb_width"
+            android:layout_marginRight="@dimen/vb_margin"
+            android:layout_marginEnd="@dimen/vb_margin"
             android:layout_height="match_parent"/>
 
         <pl.Guzooo.WoliumSpid.Elements.VolumeBar
             android:id="@+id/volume_bar_6"
-            android:layout_width="3dp"
+            android:layout_width="@dimen/vb_width"
+            android:layout_marginRight="@dimen/vb_margin"
+            android:layout_marginEnd="@dimen/vb_margin"
             android:layout_height="match_parent"/>
 
         <pl.Guzooo.WoliumSpid.Elements.VolumeBar
             android:id="@+id/volume_bar_7"
-            android:layout_width="3dp"
+            android:layout_width="@dimen/vb_width"
+            android:layout_marginRight="@dimen/vb_margin"
+            android:layout_marginEnd="@dimen/vb_margin"
             android:layout_height="match_parent"/>
 
         <pl.Guzooo.WoliumSpid.Elements.VolumeBar
             android:id="@+id/volume_bar_8"
-            android:layout_width="3dp"
+            android:layout_width="@dimen/vb_width"
+            android:layout_marginRight="@dimen/vb_margin"
+            android:layout_marginEnd="@dimen/vb_margin"
             android:layout_height="match_parent"/>
 
         <pl.Guzooo.WoliumSpid.Elements.VolumeBar
             android:id="@+id/volume_bar_9"
-            android:layout_width="3dp"
+            android:layout_width="@dimen/vb_width"
+            android:layout_marginRight="@dimen/vb_margin"
+            android:layout_marginEnd="@dimen/vb_margin"
             android:layout_height="match_parent"/>
 
         <pl.Guzooo.WoliumSpid.Elements.VolumeBar
             android:id="@+id/volume_bar_10"
-            android:layout_width="3dp"
+            android:layout_width="@dimen/vb_width"
             android:layout_height="match_parent"/>
 
         <TextView
@@ -66,7 +85,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_gravity="center"
-            android:text="Jazda na rowerze"
             android:layout_margin="@dimen/margin_standard"/>
 
         <ImageView

@@ -7,16 +7,25 @@ import android.view.View;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.OnApplyWindowInsetsListener;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
 
 import pl.Guzooo.Base.Elements.BusinessCard;
 import pl.Guzooo.Base.ModifiedElements.GActivity;
 import pl.Guzooo.Base.Utils.FullScreenUtils;
 import pl.Guzooo.Base.Utils.ThemeUtils;
+import pl.Guzooo.WoliumSpid.Adapters.AdapterProfile;
+import pl.Guzooo.WoliumSpid.Database.ProfileWithStages;
 
 public class MainActivity extends GActivity {
 
-    View addFAB;
-    View settingsFAB;
+    private MainViewModel viewModel;
+    private View addFAB;
+    private View settingsFAB;
 
     @Override
     public int getBottomPadding() {
@@ -34,11 +43,12 @@ public class MainActivity extends GActivity {
         initialization();
         setFullScreen();
         setBusinessCard();
-        setProfilesRecycler();
+        setProfiles();
     }
 
     public void onClickAddProfile(View v){
-
+        viewModel.addNewProfile();
+        //TODO: otworz aktywnosc edycji profilu
     }
 
     public void onClickSettings(View v){
@@ -47,6 +57,7 @@ public class MainActivity extends GActivity {
     }
 
     private void initialization(){
+        viewModel = new ViewModelProvider(this).get(MainViewModel.class);
         addFAB = findViewById(R.id.add_fab);
         settingsFAB = findViewById(R.id.settings_fab);
     }
@@ -64,8 +75,15 @@ public class MainActivity extends GActivity {
         businessCard.setOpenerView(logo);
     }
 
-    private void setProfilesRecycler(){
+    private void setProfiles(){
+        AdapterProfile.ProfileListener profileListener = getProfileListener();
+        AdapterProfile adapterProfile = new AdapterProfile(profileListener);
+        viewModel.getProfilesWithStages().observe(this, getObserverProfile(adapterProfile));
 
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        RecyclerView recyclerProfile = findViewById(R.id.recycler_view);
+        recyclerProfile.setLayoutManager(layoutManager);
+        recyclerProfile.setAdapter(adapterProfile);
     }
 
     private OnApplyWindowInsetsListener getWindowsInsetsListener(){
@@ -93,5 +111,28 @@ public class MainActivity extends GActivity {
 
     private int getMarginBiggest(){
         return getResources().getDimensionPixelOffset(R.dimen.margin_biggest);
+    }
+
+    private AdapterProfile.ProfileListener getProfileListener(){
+        return new AdapterProfile.ProfileListener() {
+            @Override
+            public void onClickMainView(int id) {
+                //TODO: otworz aktywność
+            }
+
+            @Override
+            public void onClickPlay(ProfileWithStages profileWithStages) {
+                //TODO: rozpocznij usługe
+            }
+        };
+    }
+
+    private Observer<List<ProfileWithStages>> getObserverProfile(AdapterProfile adapter){
+        return new Observer<List<ProfileWithStages>>() {
+            @Override
+            public void onChanged(List<ProfileWithStages> profilesWithStages) {
+                adapter.submitList(profilesWithStages);
+            }
+        };
     }
 }
