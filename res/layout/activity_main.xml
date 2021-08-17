@@ -9,67 +9,70 @@
     <androidx.core.widget.NestedScrollView
         android:id="@+id/main_scroll"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:clipToPadding="false">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/title"
+                style="@style/TextTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/app_name"
-                android:gravity="center"
                 android:layout_margin="@dimen/margin_standard"
-                app:layout_constraintTop_toTopOf="@id/business_card_g"
-                app:layout_constraintStart_toStartOf="@id/business_card_g"
+                android:gravity="center"
+                android:text="@string/app_name"
                 app:layout_constraintEnd_toEndOf="@id/business_card_g"
-                style="@style/TextTitle"/>
+                app:layout_constraintStart_toStartOf="@id/business_card_g"
+                app:layout_constraintTop_toTopOf="@id/business_card_g" />
 
             <ImageView
                 android:id="@+id/logo_g"
+                style="@style/Logo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/g_logo"
                 android:src="@mipmap/logo_g"
-                app:layout_constraintTop_toBottomOf="@id/title"
+                app:layout_constraintBottom_toBottomOf="@id/business_card_g"
                 app:layout_constraintEnd_toEndOf="@id/business_card_g"
                 app:layout_constraintStart_toStartOf="@id/business_card_g"
-                app:layout_constraintBottom_toBottomOf="@id/business_card_g"
-                style="@style/Logo"/>
+                app:layout_constraintTop_toBottomOf="@id/title" />
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:background="?attr/colorGAccent"
                 android:layout_marginStart="@dimen/margin_standard"
                 android:layout_marginEnd="@dimen/margin_standard"
-                app:layout_constraintTop_toTopOf="@id/logo_g"
-                app:layout_constraintStart_toEndOf="@id/logo_g"
+                android:background="?attr/colorGAccent"
+                app:layout_constraintBottom_toBottomOf="@id/logo_g"
                 app:layout_constraintEnd_toEndOf="@id/business_card_g"
-                app:layout_constraintBottom_toBottomOf="@id/logo_g" />
+                app:layout_constraintStart_toEndOf="@id/logo_g"
+                app:layout_constraintTop_toTopOf="@id/logo_g" />
 
             <pl.Guzooo.Base.Elements.BusinessCardG
                 android:id="@+id/business_card_g"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/business_card_g"
-                app:layout_constraintStart_toStartOf="parent"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                tools:listitem="@layout/profile_card_view"
-                tools:itemCount="5" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/business_card_g"
+                tools:itemCount="5"
+                tools:listitem="@layout/profile_card_view" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 

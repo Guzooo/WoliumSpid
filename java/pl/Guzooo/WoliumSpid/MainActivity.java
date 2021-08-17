@@ -19,6 +19,7 @@ import pl.Guzooo.Base.ModifiedElements.GActivity;
 import pl.Guzooo.Base.Utils.FullScreenUtils;
 import pl.Guzooo.Base.Utils.ThemeUtils;
 import pl.Guzooo.WoliumSpid.Adapters.AdapterProfile;
+import pl.Guzooo.WoliumSpid.Database.Profile;
 import pl.Guzooo.WoliumSpid.Database.ProfileWithStages;
 
 public class MainActivity extends GActivity {
@@ -48,7 +49,9 @@ public class MainActivity extends GActivity {
 
     public void onClickAddProfile(View v){
         viewModel.addNewProfile();
-        //TODO: otworz aktywnosc edycji profilu
+        Intent intent = new Intent(this, ProfileActivity.class);
+        intent.putExtra(ProfileActivity.EXTRA_ID, ProfileActivity.LAST_PROFILE);
+        startActivity(intent);
     }
 
     public void onClickSettings(View v){
@@ -64,9 +67,9 @@ public class MainActivity extends GActivity {
 
     private void setFullScreen(){
         View mainScroll = findViewById(R.id.main_scroll);
-        FullScreenUtils.setUIVisibility(mainScroll);
-        FullScreenUtils.setPaddings(mainScroll, this);
+        FullScreenUtils.setUIVisibility(addFAB);
         FullScreenUtils.setApplyWindowInsets(addFAB, getWindowsInsetsListener());
+        FullScreenUtils.setPaddings(mainScroll, this);
     }
 
     private void setBusinessCard(){
@@ -117,7 +120,9 @@ public class MainActivity extends GActivity {
         return new AdapterProfile.ProfileListener() {
             @Override
             public void onClickMainView(int id) {
-                //TODO: otworz aktywność
+                Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                intent.putExtra(ProfileActivity.EXTRA_ID, id);
+                startActivity(intent);
             }
 
             @Override

@@ -17,7 +17,7 @@ public interface ProfileDao {
     void insert(Profile profile);
 
     @Update
-    void update(Profile profile, List<Stage> stages);
+    void update(Profile profile);
 
     @Delete
     void delete(Profile profile, List<Stage> stages);

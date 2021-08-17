@@ -1,8 +1,28 @@
 <resources>
     <string name="app_name">WoliumSpid</string>
     <string name="year_of_release" translatable="false">2021</string>
+    <string name="g_logo">Guzooo Logo</string>
 
     <string name="profile">Profile %1$d</string>
+    <string name="run">Run</string>
 
     <string name="add_profile">Add Profile</string>
+    <string name="add_stage">Add Stage</string>
+
+    <string name="stage_order">#%1$d</string>
+
+    <string name="speed_start">It turns on from %1$.2fkm/h</string>
+    <string name="active">ACTIVE</string>
+
+    <string name="edit_name">Edit name</string>
+    <string name="delete">Delete</string>
+
+    <string name="order">Order</string>
+    <string name="volume">Volume</string>
+    <string name="speed">Speed</string>
+    <string name="speed_hint">15.08</string>
+    <string name="speed_unit">km/h</string>
+    <string name="edit_stage">Edit Stage</string>
+    <string name="add_another">Add another</string>
+    <string name="add_new">Add new</string>
 </resources>

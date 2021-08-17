@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     style="@style/CardViewStandard">
@@ -13,70 +12,70 @@
 
         <pl.Guzooo.WoliumSpid.Elements.VolumeBar
             android:id="@+id/volume_bar_1"
-            android:layout_width="@dimen/vb_width"
-            android:layout_marginRight="@dimen/vb_margin"
-            android:layout_marginEnd="@dimen/vb_margin"
+            android:layout_width="@dimen/width_volume_bar"
+            android:layout_marginRight="@dimen/margin_volume_bar"
+            android:layout_marginEnd="@dimen/margin_volume_bar"
             android:layout_height="match_parent" />
 
         <pl.Guzooo.WoliumSpid.Elements.VolumeBar
             android:id="@+id/volume_bar_2"
-            android:layout_width="@dimen/vb_width"
-            android:layout_marginRight="@dimen/vb_margin"
-            android:layout_marginEnd="@dimen/vb_margin"
+            android:layout_width="@dimen/width_volume_bar"
+            android:layout_marginRight="@dimen/margin_volume_bar"
+            android:layout_marginEnd="@dimen/margin_volume_bar"
             android:layout_height="match_parent"/>
 
         <pl.Guzooo.WoliumSpid.Elements.VolumeBar
             android:id="@+id/volume_bar_3"
-            android:layout_width="@dimen/vb_width"
-            android:layout_marginRight="@dimen/vb_margin"
-            android:layout_marginEnd="@dimen/vb_margin"
+            android:layout_width="@dimen/width_volume_bar"
+            android:layout_marginRight="@dimen/margin_volume_bar"
+            android:layout_marginEnd="@dimen/margin_volume_bar"
             android:layout_height="match_parent"/>
 
         <pl.Guzooo.WoliumSpid.Elements.VolumeBar
             android:id="@+id/volume_bar_4"
-            android:layout_width="@dimen/vb_width"
-            android:layout_marginRight="@dimen/vb_margin"
-            android:layout_marginEnd="@dimen/vb_margin"
+            android:layout_width="@dimen/width_volume_bar"
+            android:layout_marginRight="@dimen/margin_volume_bar"
+            android:layout_marginEnd="@dimen/margin_volume_bar"
             android:layout_height="match_parent"/>
 
         <pl.Guzooo.WoliumSpid.Elements.VolumeBar
             android:id="@+id/volume_bar_5"
-            android:layout_width="@dimen/vb_width"
-            android:layout_marginRight="@dimen/vb_margin"
-            android:layout_marginEnd="@dimen/vb_margin"
+            android:layout_width="@dimen/width_volume_bar"
+            android:layout_marginRight="@dimen/margin_volume_bar"
+            android:layout_marginEnd="@dimen/margin_volume_bar"
             android:layout_height="match_parent"/>
 
         <pl.Guzooo.WoliumSpid.Elements.VolumeBar
             android:id="@+id/volume_bar_6"
-            android:layout_width="@dimen/vb_width"
-            android:layout_marginRight="@dimen/vb_margin"
-            android:layout_marginEnd="@dimen/vb_margin"
+            android:layout_width="@dimen/width_volume_bar"
+            android:layout_marginRight="@dimen/margin_volume_bar"
+            android:layout_marginEnd="@dimen/margin_volume_bar"
             android:layout_height="match_parent"/>
 
         <pl.Guzooo.WoliumSpid.Elements.VolumeBar
             android:id="@+id/volume_bar_7"
-            android:layout_width="@dimen/vb_width"
-            android:layout_marginRight="@dimen/vb_margin"
-            android:layout_marginEnd="@dimen/vb_margin"
+            android:layout_width="@dimen/width_volume_bar"
+            android:layout_marginRight="@dimen/margin_volume_bar"
+            android:layout_marginEnd="@dimen/margin_volume_bar"
             android:layout_height="match_parent"/>
 
         <pl.Guzooo.WoliumSpid.Elements.VolumeBar
             android:id="@+id/volume_bar_8"
-            android:layout_width="@dimen/vb_width"
-            android:layout_marginRight="@dimen/vb_margin"
-            android:layout_marginEnd="@dimen/vb_margin"
+            android:layout_width="@dimen/width_volume_bar"
+            android:layout_marginRight="@dimen/margin_volume_bar"
+            android:layout_marginEnd="@dimen/margin_volume_bar"
             android:layout_height="match_parent"/>
 
         <pl.Guzooo.WoliumSpid.Elements.VolumeBar
             android:id="@+id/volume_bar_9"
-            android:layout_width="@dimen/vb_width"
-            android:layout_marginRight="@dimen/vb_margin"
-            android:layout_marginEnd="@dimen/vb_margin"
+            android:layout_width="@dimen/width_volume_bar"
+            android:layout_marginRight="@dimen/margin_volume_bar"
+            android:layout_marginEnd="@dimen/margin_volume_bar"
             android:layout_height="match_parent"/>
 
         <pl.Guzooo.WoliumSpid.Elements.VolumeBar
             android:id="@+id/volume_bar_10"
-            android:layout_width="@dimen/vb_width"
+            android:layout_width="@dimen/width_volume_bar"
             android:layout_height="match_parent"/>
 
         <TextView
@@ -92,6 +91,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_play_arrow"
+            android:contentDescription="@string/run"
             style="@style/ClickableImage"/>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

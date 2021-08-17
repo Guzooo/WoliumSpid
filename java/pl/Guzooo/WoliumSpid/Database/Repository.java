@@ -5,6 +5,7 @@ import android.app.Application;
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 
 public class Repository {
     private ProfileDao profileDao;
@@ -25,13 +26,13 @@ public class Repository {
         });
     }
 
-    public void updateProfile(ProfileWithStages profile){
+    public void updateProfile(Profile profile){
         WSDatabase.getExecutor().execute(() -> {
-            profileDao.update(profile.getProfile(), profile.getStages());
+            profileDao.update(profile);
         });
     }
 
-    public void deleteProfile(ProfileWithStages profile){
+    public void deleteProfileWithStages(ProfileWithStages profile){
         WSDatabase.getExecutor().execute(() -> {
             profileDao.delete(profile.getProfile(), profile.getStages());
         });
@@ -40,6 +41,18 @@ public class Repository {
     public void insertStage(Stage stage){
         WSDatabase.getExecutor().execute(() -> {
             stageDao.insert(stage);
+        });
+    }
+
+    public void updateStage(Stage stage){
+        WSDatabase.getExecutor().execute(() -> {
+            stageDao.update(stage);
+        });
+    }
+
+    public void updateStages(List<Stage> stages){
+        WSDatabase.getExecutor().execute(() -> {
+            stageDao.updateAll(stages);
         });
     }
 
@@ -59,5 +72,13 @@ public class Repository {
 
     public LiveData<ProfileWithStages> getLastProfile(){
         return profileDao.getLast();
+    }
+
+    public List<Stage> getStagesFromOneProfileWithOrderGreaterOrEqualsThan(int profileId, int orderMin){
+        return stageDao.getStagesFromOneProfileWithOrderGreaterOrEqualsThan(profileId, orderMin);
+    }
+
+    public List<Stage> getStagesFromOneProfileWithOrderBetween(int profileId, int orderMin, int orderMax){
+        return stageDao.getStagesFromOneProfileWithOrderBetween(profileId, orderMin, orderMax);
     }
 }

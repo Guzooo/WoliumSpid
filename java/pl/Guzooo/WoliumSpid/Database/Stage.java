@@ -2,6 +2,7 @@ package pl.Guzooo.WoliumSpid.Database;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import static pl.Guzooo.WoliumSpid.Database.Stage.DATABASE_NAME;
@@ -23,9 +24,23 @@ public class Stage implements Comparable{
     @ColumnInfo(name = VOLUME)
     private int volume;
     @ColumnInfo(name = SPEED)
-    private int speed;
+    private float speed;
     @ColumnInfo(name = ORDER)
     private int order;
+    @Ignore
+    private boolean active = false;
+    @Ignore
+    private boolean skip = false;
+
+    public Stage clone(){
+        Stage clone = new Stage();
+        clone.setId(id);
+        clone.setProfileId(profileId);
+        clone.setVolume(volume);
+        clone.setSpeed(speed);
+        clone.setOrder(order);
+        return clone;
+    }
 
     public int getId() {
         return id;
@@ -51,11 +66,11 @@ public class Stage implements Comparable{
         this.volume = volume;
     }
 
-    public int getSpeed() {
+    public float getSpeed() {
         return speed;
     }
 
-    public void setSpeed(int speed) {
+    public void setSpeed(float speed) {
         this.speed = speed;
     }
 
@@ -65,6 +80,22 @@ public class Stage implements Comparable{
 
     public void setOrder(int order) {
         this.order = order;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public boolean isSkip() {
+        return skip;
+    }
+
+    public void setSkip(boolean skip) {
+        this.skip = skip;
     }
 
     @Override

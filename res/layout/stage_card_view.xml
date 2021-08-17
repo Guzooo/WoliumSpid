@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5"/>
+
+    <ImageView
+        android:id="@+id/top_left_arrow_beam"
+        android:layout_width="@dimen/width_arrow"
+        android:layout_height="@dimen/height_arrow_beam"
+        android:src="?attr/colorGAccent"
+        android:layout_marginRight="@dimen/margin_between_arrows"
+        android:layout_marginEnd="@dimen/margin_between_arrows"
+        android:importantForAccessibility="no"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="@id/guideline_center"
+        app:layout_constraintEnd_toStartOf="@id/top_right_arrow_beam"/>
+
+    <ImageView
+        android:id="@+id/top_left_arrowhead"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_down_arrow"
+        android:importantForAccessibility="no"
+        app:tint="?attr/colorGAccent"
+        app:layout_constraintTop_toBottomOf="@id/top_left_arrow_beam"
+        app:layout_constraintStart_toStartOf="@id/top_left_arrow_beam"
+        app:layout_constraintEnd_toEndOf="@id/top_left_arrow_beam"/>
+
+    <ImageView
+        android:id="@+id/top_right_arrowhead"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_down_arrow"
+        android:importantForAccessibility="no"
+        android:rotation="180"
+        app:tint="?attr/colorGAccent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="@id/top_right_arrow_beam"
+        app:layout_constraintEnd_toEndOf="@id/top_right_arrow_beam"/>
+
+    <ImageView
+        android:id="@+id/top_right_arrow_beam"
+        android:layout_width="@dimen/width_arrow"
+        android:layout_height="0dp"
+        android:importantForAccessibility="no"
+        android:src="?attr/colorGAccent"
+        app:layout_constraintTop_toBottomOf="@id/top_right_arrowhead"
+        app:layout_constraintStart_toEndOf="@id/top_left_arrow_beam"
+        app:layout_constraintEnd_toStartOf="@id/guideline_center"
+        app:layout_constraintBottom_toBottomOf="@id/top_left_arrowhead"/>
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/top_arrows"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="top_left_arrow_beam, top_left_arrowhead, top_right_arrowhead, top_right_arrow_beam"/>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/top_left_arrowhead"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        style="@style/CardViewStandard">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.33"/>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_center2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5"/>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.67"/>
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="@id/guideline_left"
+                app:layout_constraintEnd_toEndOf="@id/guideline_left"
+                app:layout_constraintBottom_toBottomOf="@id/first_line"
+                style="@style/TextBold"/>
+
+            <ImageView
+                android:id="@+id/volume_image"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_volume_high"
+                android:layout_marginTop="@dimen/margin_standard"
+                android:layout_marginRight="@dimen/margin_standard"
+                android:layout_marginEnd="@dimen/margin_standard"
+                android:layout_marginBottom="@dimen/margin_standard"
+                android:importantForAccessibility="no"
+                app:tint="?attr/colorGSecondary"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="@id/guideline_right"
+                app:layout_constraintEnd_toStartOf="@id/volume_title"
+                app:layout_constraintBottom_toBottomOf="@id/first_line"/>
+
+            <TextView
+                android:id="@+id/volume_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/volume_image"
+                app:layout_constraintEnd_toEndOf="@id/guideline_right"
+                app:layout_constraintBottom_toBottomOf="@id/first_line"
+                style="@style/TextBold"/>
+
+            <TextView
+                android:id="@+id/active"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/active"
+                android:textSize="@dimen/text_description"
+                android:textColor="?attr/colorGAccent"
+                android:background="@drawable/active_border"
+                android:layout_margin="@dimen/margin_standard"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                style="@style/TextBold"/>
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/first_line"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="title,volume_image, volume_title" />
+
+            <TextView
+                android:id="@+id/speed_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_standard"
+                app:layout_constraintTop_toBottomOf="@id/first_line"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <ImageView
+                android:id="@+id/center_left_arrow_beam"
+                android:layout_width="@dimen/width_arrow"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/margin_card"
+                android:layout_marginEnd="@dimen/margin_between_arrows"
+                android:layout_marginRight="@dimen/margin_between_arrows"
+                android:layout_marginBottom="@dimen/margin_card"
+                android:importantForAccessibility="no"
+                android:alpha="0.65"
+                android:src="?attr/colorGAccent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/center_right_arrow_beam"
+                app:layout_constraintStart_toEndOf="@id/guideline_center2"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/center_left_arrowhead"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:importantForAccessibility="no"
+                android:alpha="0.65"
+                android:src="@drawable/ic_down_arrow"
+                app:tint="?attr/colorGAccent"
+                app:layout_constraintTop_toBottomOf="@id/center_right_arrowhead"
+                app:layout_constraintStart_toStartOf="@id/center_left_arrow_beam"
+                app:layout_constraintEnd_toEndOf="@id/center_left_arrow_beam"
+                app:layout_constraintBottom_toBottomOf="@id/center_left_arrow_beam"/>
+
+            <ImageView
+                android:id="@+id/center_right_arrow_beam"
+                android:layout_width="@dimen/width_arrow"
+                android:layout_height="0dp"
+                android:importantForAccessibility="no"
+                android:alpha="0.65"
+                android:src="?attr/colorGAccent"
+                app:layout_constraintTop_toTopOf="@id/center_left_arrow_beam"
+                app:layout_constraintStart_toEndOf="@id/center_left_arrow_beam"
+                app:layout_constraintEnd_toStartOf="@id/guideline_center2"
+                app:layout_constraintBottom_toBottomOf="@id/center_left_arrow_beam"/>
+
+            <ImageView
+                android:id="@+id/center_right_arrowhead"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:importantForAccessibility="no"
+                android:rotation="180"
+                android:alpha="0.65"
+                android:src="@drawable/ic_down_arrow"
+                app:layout_constraintBottom_toTopOf="@id/center_left_arrowhead"
+                app:layout_constraintEnd_toEndOf="@id/center_right_arrow_beam"
+                app:layout_constraintStart_toStartOf="@id/center_right_arrow_beam"
+                app:layout_constraintTop_toTopOf="@id/center_right_arrow_beam"
+                app:tint="?attr/colorGAccent" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/center_arrows"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="center_left_arrow_beam, center_left_arrowhead, center_right_arrow_beam, center_right_arrowhead"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

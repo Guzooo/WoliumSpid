@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="vb_width">4dp</dimen>
-    <dimen name="vb_margin">1dp</dimen>
+    <dimen name="width_volume_bar">4dp</dimen>
+    <dimen name="margin_volume_bar">1dp</dimen>
 </resources>
