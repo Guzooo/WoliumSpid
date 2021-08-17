@@ -41,6 +41,7 @@ public class AdapterProfile extends ListAdapter<ProfileWithStages, ViewHolderPro
         List<Stage> stages = profileWithStages.getStages();
         holder.setVolumeBars(stages);
         holder.setTitle(profile);
+        holder.setPlay(stages.size() > 0);
         setClickListeners(profileWithStages, holder);
     }
 
@@ -65,7 +66,7 @@ public class AdapterProfile extends ListAdapter<ProfileWithStages, ViewHolderPro
                     return false;
                 if (oldProfile.getName().equals("") && oldProfile.getId() != newProfile.getId())
                      return false;
-                if(oldStages.size() != newStages.size())
+                if(oldStages.size() != newStages.size() && (oldStages.size() < 10 || newStages.size() < 10))
                     return false;
                 for(int i = 0; i < 10 && i < oldStages.size(); i++){
                     if(oldStages.get(i).getVolume() != newStages.get(i).getVolume())
