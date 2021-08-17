@@ -61,10 +61,10 @@ public class AdapterProfile extends ListAdapter<ProfileWithStages, ViewHolderPro
                 Profile newProfile = newItem.getProfile();
                 List<Stage> oldStages = oldItem.getStages();
                 List<Stage> newStages = newItem.getStages();
-                if(oldProfile.getName().equals(newProfile.getName()))
-                    if(oldProfile.getName().equals(""))
-                        if(oldProfile.getId() != newProfile.getId())
-                            return false;
+                if(!oldProfile.getName().equals(newProfile.getName()))
+                    return false;
+                if (oldProfile.getName().equals("") && oldProfile.getId() != newProfile.getId())
+                     return false;
                 if(oldStages.size() != newStages.size())
                     return false;
                 for(int i = 0; i < 10 && i < oldStages.size(); i++){

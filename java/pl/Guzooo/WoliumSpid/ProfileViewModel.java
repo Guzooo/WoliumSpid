@@ -5,6 +5,7 @@ import android.app.Application;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import pl.Guzooo.WoliumSpid.Database.Profile;
 import pl.Guzooo.WoliumSpid.Database.ProfileWithStages;
 import pl.Guzooo.WoliumSpid.Database.Repository;
 
@@ -27,6 +28,10 @@ public class ProfileViewModel extends AndroidViewModel {
         return profile;
     }
 
+    public Profile getProfile(){
+        return profile.getValue().getProfile();
+    }
+
     public int getProfileId(){
         return profile.getValue().getProfile().getId();
     }
@@ -41,9 +46,5 @@ public class ProfileViewModel extends AndroidViewModel {
 
     public void updateProfile(){
         repository.updateProfile(profile.getValue().getProfile());
-    }
-
-    public void updateStages(){
-        repository.updateStages(profile.getValue().getStages());
     }
 }

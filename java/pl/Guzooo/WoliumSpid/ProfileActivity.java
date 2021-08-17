@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import pl.Guzooo.Base.Elements.TitleChanger;
 import pl.Guzooo.Base.ModifiedElements.GActivity;
 import pl.Guzooo.Base.Utils.FullScreenUtils;
 import pl.Guzooo.WoliumSpid.Adapters.AdapterStage;
@@ -29,6 +30,7 @@ public class ProfileActivity extends GActivity {
 
     private ProfileViewModel profileViewModel;
     private StageViewModel stageViewModel;
+    private TitleChanger titleChanger;
     private View addFab;
     private RecyclerView recyclerStage;
 
@@ -46,6 +48,7 @@ public class ProfileActivity extends GActivity {
 
         initialization();
         setFullScreen();
+        setTitleChanger();
         setStages();
     }
 
@@ -59,7 +62,7 @@ public class ProfileActivity extends GActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.edit_title:
-                //TODO: obsługa tego paska
+                titleChanger.show();
                 return true;
             case R.id.run:
                 //TODO: włącz profil
@@ -70,6 +73,14 @@ public class ProfileActivity extends GActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(titleChanger.isVisible())
+            titleChanger.hide();
+        else
+            super.onBackPressed();
     }
 
     public void onClickAddStage(View v){
@@ -83,6 +94,7 @@ public class ProfileActivity extends GActivity {
     private void initialization(){
         profileViewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
         stageViewModel = new ViewModelProvider(this).get(StageViewModel.class);
+        titleChanger = findViewById(R.id.title_changer);
         addFab = findViewById(R.id.add_fab);
         recyclerStage = findViewById(R.id.recycler_view);
     }
@@ -91,6 +103,12 @@ public class ProfileActivity extends GActivity {
         FullScreenUtils.setUIVisibility(addFab);
         FullScreenUtils.setApplyWindowInsets(addFab, getWindowsInsertsListener());
         FullScreenUtils.setPaddings(recyclerStage, this);
+    }
+
+    private void setTitleChanger(){
+        titleChanger.setHint(R.string.profile_title_hint);
+        titleChanger.setViewInFrontOfActionBar();
+        titleChanger.setListener(getTitleChangeListener());
     }
 
     private void setStages(){
@@ -148,6 +166,24 @@ public class ProfileActivity extends GActivity {
                 List<Stage> stages = profileWithStages.getStages();
                 adapter.submitList(stages);
                 getSupportActionBar().setTitle(profile.getName(getApplicationContext()));
+                titleChanger.setEditText(profile.getName());
+                //TODO: animacja
+            }
+        };
+    }
+
+    private TitleChanger.TitleChangerListener getTitleChangeListener(){
+        return new TitleChanger.TitleChangerListener() {
+            @Override
+            public void onClickPositiveButton(String newTitle) {
+                profileViewModel.getProfile().setName(newTitle);
+                profileViewModel.updateProfile();
+            }
+
+            @Override
+            public void onClickNegativeButton() {
+                String text = profileViewModel.getProfile().getName();
+                titleChanger.setEditText(text);
             }
         };
     }
