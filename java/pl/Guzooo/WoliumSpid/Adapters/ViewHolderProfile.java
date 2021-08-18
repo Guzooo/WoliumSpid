@@ -31,12 +31,13 @@ public class ViewHolderProfile extends RecyclerView.ViewHolder {
     public void setVolumeBars(List<Stage> stages){
         Context context = itemView.getContext();
         int maxVolume = VolumeUtils.getVolumeMax(context);
-        for(int i = 0; i < volumeBars.size() && i < stages.size(); i++){
-            VolumeBar volumeBar = volumeBars.get(i);
-            Stage stage = stages.get(i);
-            int volume = stage.getVolume();
-            volumeBar.setVisibility(View.VISIBLE);
-            volumeBar.setLevel(volume , maxVolume);
+        for(int i = 0; i < volumeBars.size(); i++){
+            if(i < stages.size()) {
+                Stage stage = stages.get(i);
+                int volume = stage.getVolume();
+                setVolumeBar(i, volume, maxVolume);
+            } else
+                setVolumeBar(i, -1, 0);
         }
     }
     
@@ -50,7 +51,7 @@ public class ViewHolderProfile extends RecyclerView.ViewHolder {
         if(canPlay)
             play.setAlpha(1f);
         else
-            play.setAlpha(0.65f);
+            play.setAlpha(0.5f);
     }
 
     public void setOnClickMainViewListener(View.OnClickListener listener){
@@ -62,11 +63,6 @@ public class ViewHolderProfile extends RecyclerView.ViewHolder {
     }
 
     private void initializationVolumeBars(View v){
-        addVolumeBars(v);
-        setVolumeBarsVisibility();
-    }
-
-    private void addVolumeBars(View v){
         volumeBars.add(v.findViewById(R.id.volume_bar_1));
         volumeBars.add(v.findViewById(R.id.volume_bar_2));
         volumeBars.add(v.findViewById(R.id.volume_bar_3));
@@ -79,8 +75,12 @@ public class ViewHolderProfile extends RecyclerView.ViewHolder {
         volumeBars.add(v.findViewById(R.id.volume_bar_10));
     }
 
-    private void setVolumeBarsVisibility(){
-        for(VolumeBar volumeBar : volumeBars)
+    private void setVolumeBar(int i, int volume, int maxVolume){
+        VolumeBar volumeBar = volumeBars.get(i);
+        if(volume != -1) {
+            volumeBar.setVisibility(View.VISIBLE);
+            volumeBar.setLevel(volume, maxVolume);
+        } else
             volumeBar.setVisibility(View.INVISIBLE);
     }
 }

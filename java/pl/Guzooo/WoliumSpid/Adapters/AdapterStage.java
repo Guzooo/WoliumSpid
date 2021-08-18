@@ -33,13 +33,8 @@ public class AdapterStage extends ListAdapter<Stage, ViewHolderStage> {
         Stage stage = getItem(position);
         View.OnClickListener onClickListener = getOnClickListener(stage);
         holder.setStageInfo(stage);
+        holder.setTopArrows(position);
         holder.setOnClickMainViewListener(onClickListener);
-        if(position == 0)
-            holder.setGoneTopArrows();
-        if(stage.isSkip())
-            holder.setVisibleCenterArrows();
-        if(stage.isActive())
-            holder.setVisibleActive();
     }
 
     private static DiffUtil.ItemCallback<Stage> getDiffCallback(){

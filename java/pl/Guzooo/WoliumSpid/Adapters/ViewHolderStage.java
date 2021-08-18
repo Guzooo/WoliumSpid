@@ -31,43 +31,30 @@ public class ViewHolderStage extends RecyclerView.ViewHolder {
         topArrows = v.findViewById(R.id.top_arrows);
         centerArrows = v.findViewById(R.id.center_arrows);
         active = v.findViewById(R.id.active);
-        setArrows();
-        setActive();
+        centerArrows.setVisibility(View.INVISIBLE);
     }
 
     public void setStageInfo(Stage stage){
         int order = stage.getOrder();
         int volume = stage.getVolume();
         float speed = stage.getSpeed();
+        boolean active = stage.isActive();
         setTitle(order);
         setVolumeText(volume);
         setVolumeIcon(volume);
         setSpeed(speed);
+        setActive(active);
     }
 
-    public void setGoneTopArrows(){
-        topArrows.setVisibility(View.GONE);
-    }
-
-    public void setVisibleCenterArrows(){
-        centerArrows.setVisibility(View.VISIBLE);
-    }
-
-    public void setVisibleActive(){
-        active.setVisibility(View.VISIBLE);
+    public void setTopArrows(int position){
+        if(position == 0)
+            topArrows.setVisibility(View.GONE);
+        else
+            topArrows.setVisibility(View.VISIBLE);
     }
 
     public void setOnClickMainViewListener(View.OnClickListener listener){
         itemView.setOnClickListener(listener);
-    }
-
-    private void setArrows(){
-        topArrows.setVisibility(View.VISIBLE);
-        centerArrows.setVisibility(View.INVISIBLE);
-    }
-
-    private void setActive(){
-        active.setVisibility(View.INVISIBLE);
     }
 
     private void setTitle(int order){
@@ -92,6 +79,13 @@ public class ViewHolderStage extends RecyclerView.ViewHolder {
     private void setSpeed(float speed){
         String text = getContext().getString(R.string.speed_start, speed);
         speedStart.setText(text);
+    }
+
+    private void setActive(boolean isActive){
+        if(isActive)
+            active.setVisibility(View.VISIBLE);
+        else
+            active.setVisibility(View.INVISIBLE);
     }
 
     private Context getContext(){

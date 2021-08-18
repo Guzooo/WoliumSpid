@@ -91,6 +91,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_play_arrow"
+            android:layout_gravity="center"
             android:contentDescription="@string/run"
             style="@style/ClickableImage"/>
     </LinearLayout>
