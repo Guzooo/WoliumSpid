@@ -52,6 +52,7 @@ public class ViewHolderProfile extends RecyclerView.ViewHolder {
             play.setAlpha(1f);
         else
             play.setAlpha(0.5f);
+        play.setEnabled(canPlay);
     }
 
     public void setOnClickMainViewListener(View.OnClickListener listener){

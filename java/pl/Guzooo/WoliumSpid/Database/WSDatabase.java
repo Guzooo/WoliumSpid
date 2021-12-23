@@ -10,6 +10,8 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import pl.Guzooo.WoliumSpid.R;
+
 @Database(entities = {Profile.class, Stage.class}, version = 1)
 public abstract class WSDatabase extends RoomDatabase {
 
@@ -26,7 +28,7 @@ public abstract class WSDatabase extends RoomDatabase {
         if(instance == null){
             instance = Room.databaseBuilder(context.getApplicationContext(),
                     WSDatabase.class, DATABASE_NAME)
-                    .addCallback(getCallback())
+                    .addCallback(getCallback(context))
                     .build();
         }
         return instance;
@@ -36,23 +38,23 @@ public abstract class WSDatabase extends RoomDatabase {
         return executor;
     }
 
-    private static RoomDatabase.Callback getCallback(){
+    private static RoomDatabase.Callback getCallback(Context context){
         return new RoomDatabase.Callback(){
             @Override
             public void onCreate(SupportSQLiteDatabase db) {
                 super.onCreate(db);
                 getExecutor().execute(() -> {
-                    createRunProfile();
-                    createBicycleProfile();
-                    createCarProfile();
+                    createRunProfile(context);
+                    createBicycleProfile(context);
+                    createCarProfile(context);
                 }); }
         };
     }
 
-    private static void createRunProfile(){
+    private static void createRunProfile(Context context){
         Profile profile = new Profile();
         profile.setId(1);
-        profile.setName("Bieg - trzymaj tempo");//TODO: string
+        profile.setName(context.getString(R.string.profile_run));
         instance.profileDao().insert(profile);
         Stage stage1 = new Stage();
         stage1.setProfileId(1);
@@ -74,10 +76,10 @@ public abstract class WSDatabase extends RoomDatabase {
         instance.stageDao().insert(stage3);
     }
 
-    private static void createBicycleProfile(){
+    private static void createBicycleProfile(Context context){
         Profile profile = new Profile();
         profile.setId(2);
-        profile.setName("Jazda na rowerze");//TODO: string
+        profile.setName(context.getString(R.string.profile_bicycle));
         instance.profileDao().insert(profile);
         Stage stage1 = new Stage();
         stage1.setProfileId(2);
@@ -105,10 +107,10 @@ public abstract class WSDatabase extends RoomDatabase {
         instance.stageDao().insert(stage4);
     }
 
-    private static void createCarProfile(){
+    private static void createCarProfile(Context context){
         Profile profile = new Profile();
         profile.setId(3);
-        profile.setName("Samochód - przepisowa jazda");//TODO: string
+        profile.setName(context.getString(R.string.profile_car));
         instance.profileDao().insert(profile);
         Stage stage1 = new Stage();
         stage1.setProfileId(3);
@@ -120,31 +122,31 @@ public abstract class WSDatabase extends RoomDatabase {
         stage2.setProfileId(3);
         stage2.setOrder(2);
         stage2.setVolume(8);
-        stage2.setSpeed(50);
+        stage2.setSpeed(51);
         instance.stageDao().insert(stage2);
         Stage stage3 = new Stage();
         stage3.setProfileId(3);
         stage3.setOrder(3);
         stage3.setVolume(15);
-        stage3.setSpeed(62);
+        stage3.setSpeed(56);
         instance.stageDao().insert(stage3);
         Stage stage4 = new Stage();
         stage4.setProfileId(3);
         stage4.setOrder(4);
         stage4.setVolume(8);
-        stage4.setSpeed(90);
+        stage4.setSpeed(91);
         instance.stageDao().insert(stage4);
         Stage stage5 = new Stage();
         stage5.setProfileId(3);
         stage5.setOrder(5);
         stage5.setVolume(15);
-        stage5.setSpeed(112);
+        stage5.setSpeed(96);
         instance.stageDao().insert(stage5);
         Stage stage6 = new Stage();
         stage6.setProfileId(3);
         stage6.setOrder(6);
         stage6.setVolume(4);
-        stage6.setSpeed(140);
+        stage6.setSpeed(140.5f);
         instance.stageDao().insert(stage6);
 
     }

@@ -20,7 +20,7 @@ public class AdapterProfile extends ListAdapter<ProfileWithStages, ViewHolderPro
 
     public interface ProfileListener{
         void onClickMainView(int id);
-        void onClickPlay(ProfileWithStages profileWithStages);
+        void onClickPlay(int id);
     }
 
     public AdapterProfile(ProfileListener listener) {
@@ -80,7 +80,7 @@ public class AdapterProfile extends ListAdapter<ProfileWithStages, ViewHolderPro
     private void setClickListeners(ProfileWithStages profileWithStages, ViewHolderProfile holder){
         int id = profileWithStages.getProfile().getId();
         View.OnClickListener onClickMainViewListener = getOnClickMainViewListener(id);
-        View.OnClickListener onClickPlayListener = getOnClickPlayListener(profileWithStages);
+        View.OnClickListener onClickPlayListener = getOnClickPlayListener(id);
         holder.setOnClickMainViewListener(onClickMainViewListener);
         holder.setOnClickPlayListener(onClickPlayListener);
     }
@@ -94,11 +94,11 @@ public class AdapterProfile extends ListAdapter<ProfileWithStages, ViewHolderPro
         };
     }
 
-    private View.OnClickListener getOnClickPlayListener(ProfileWithStages profileWithStages){
+    private View.OnClickListener getOnClickPlayListener(int id){
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.onClickPlay(profileWithStages);
+                listener.onClickPlay(id);
             }
         };
     }

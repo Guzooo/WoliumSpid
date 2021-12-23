@@ -1,7 +1,11 @@
 <resources>
-    <string name="app_name">WoliumSpid</string>
+    <string name="app_name">Volume Controller</string>
     <string name="year_of_release" translatable="false">2021</string>
     <string name="g_logo">Guzooo Logo</string>
+
+    <string name="profile_run">Run - keep pace</string>
+    <string name="profile_bicycle">Cycling</string>
+    <string name="profile_car">Car - driving under the provisions</string>
 
     <string name="profile">Profile %1$d</string>
     <string name="run">Run</string>
@@ -26,4 +30,9 @@
     <string name="edit_stage">Edit Stage</string>
     <string name="add_another">Add another</string>
     <string name="add_new">Add new</string>
+
+    <string name="looking_profile">I\'m looking for the profile…</string>
+    <string name="profile_not_found">The profile or its stages was not found</string>
+    <string name="stage_and_speed_info">Stage #%1$d • Speed: %2$.2fkm/h</string>
+    <string name="unset_stage_and_speed_info">Stage is unset • Speed: %1$.2fkm/h</string>
 </resources>

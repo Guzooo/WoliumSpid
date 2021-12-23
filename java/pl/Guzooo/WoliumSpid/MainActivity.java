@@ -2,6 +2,7 @@ package pl.Guzooo.WoliumSpid;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -16,11 +17,13 @@ import java.util.List;
 
 import pl.Guzooo.Base.Elements.BusinessCard;
 import pl.Guzooo.Base.ModifiedElements.GActivity;
+import pl.Guzooo.Base.Utils.ColorUtils;
 import pl.Guzooo.Base.Utils.FullScreenUtils;
 import pl.Guzooo.Base.Utils.ThemeUtils;
 import pl.Guzooo.WoliumSpid.Adapters.AdapterProfile;
-import pl.Guzooo.WoliumSpid.Database.Profile;
 import pl.Guzooo.WoliumSpid.Database.ProfileWithStages;
+import pl.Guzooo.WoliumSpid.Utils.NotificationChannelUtils;
+import pl.Guzooo.WoliumSpid.Utils.VolumeControllerUtils;
 
 public class MainActivity extends GActivity {
 
@@ -39,6 +42,7 @@ public class MainActivity extends GActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ThemeUtils.setTheme(this);
+        NotificationChannelUtils.createNotificationChannels(this);
         setContentView(R.layout.activity_main);
 
         initialization();
@@ -126,8 +130,8 @@ public class MainActivity extends GActivity {
             }
 
             @Override
-            public void onClickPlay(ProfileWithStages profileWithStages) {
-                //TODO: rozpocznij usługe
+            public void onClickPlay(int id) {
+                VolumeControllerUtils.run(id, getApplicationContext());
             }
         };
     }
