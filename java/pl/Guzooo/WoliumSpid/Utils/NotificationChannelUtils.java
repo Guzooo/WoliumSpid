@@ -30,21 +30,19 @@ public class NotificationChannelUtils {
         createVolumeControllerChannel(context);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    @SuppressLint("NewApi")
     public static boolean isChannelActive(@Channels String channelId, Context context){
-        NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        NotificationChannel channel = manager.getNotificationChannel(channelId);
-        if(channel.getImportance() == NotificationManagerCompat.IMPORTANCE_NONE)
-            return false;
-        return true;
+        if(FragmentationUtils.isMinimumOreo())
+            return isChannelActiveOnOreoAndNewerAndroids(channelId, context);
+        return isChannelActiveOnAndroidsBeforeOreo(context);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    @SuppressLint("NewApi")
     public static void openChannelSettings(@Channels String channelId, Context context){
-        Intent intent = new Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS);
-        intent.putExtra(Settings.EXTRA_APP_PACKAGE, context.getPackageName());
-        intent.putExtra(Settings.EXTRA_CHANNEL_ID, channelId);
-        context.startActivity(intent);
+        if(FragmentationUtils.isMinimumOreo())
+            openChannelSettingsOnOreoAndNewerAndroids(channelId, context);
+        else
+            openChannelSettingsOnAndroidsBeforeOreo(context);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -60,5 +58,33 @@ public class NotificationChannelUtils {
         NotificationChannel channel = new NotificationChannel(id, name, importance);
         channel.setDescription(description);
         context.getSystemService(NotificationManager.class).createNotificationChannel(channel);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private static boolean isChannelActiveOnOreoAndNewerAndroids(String channelId, Context context){
+        NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationChannel channel = manager.getNotificationChannel(channelId);
+        if (channel.getImportance() == NotificationManagerCompat.IMPORTANCE_NONE)
+            return false;
+        return true;
+    }
+
+    private static boolean isChannelActiveOnAndroidsBeforeOreo(Context context){
+        return NotificationManagerCompat.from(context).areNotificationsEnabled();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private static void openChannelSettingsOnOreoAndNewerAndroids(@Channels String channelId, Context context){
+        Intent intent = new Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS);
+        intent.putExtra(Settings.EXTRA_APP_PACKAGE, context.getPackageName());
+        intent.putExtra(Settings.EXTRA_CHANNEL_ID, channelId);
+        context.startActivity(intent);
+    }
+
+    private static void openChannelSettingsOnAndroidsBeforeOreo(Context context){//TODO:test czy działa + czy działa na najstarszym androidzie
+        Intent intent = new Intent("android.settings.APP_NOTIFICATION_SETTINGS");
+        intent.putExtra("app_package", context.getPackageName());
+        intent.putExtra("app_uid", context.getApplicationInfo().uid);
+        context.startActivity(intent);
     }
 }

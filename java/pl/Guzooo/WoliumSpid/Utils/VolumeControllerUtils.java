@@ -1,18 +1,30 @@
 package pl.Guzooo.WoliumSpid.Utils;
 
+import android.Manifest;
+import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+
+import androidx.core.app.ActivityCompat;
 
 import pl.Guzooo.WoliumSpid.VolumeControllerService;
 
 public class VolumeControllerUtils {
 
-    public static void run(int profileId, Context context){
+    public static PendingIntent getStopPendingIntent(Context context){
+        Intent intent = getIntent(context);
+        intent.putExtra(VolumeControllerService.EXTRA_ID, 0);
+        return PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    public static void run(int profileId, Activity activity){
         //TODO: jeżeli id jest takie samo jak VolumeControllerData to zatrzymaj Service;
-        boolean canRun = checkPermissions();
+        boolean canRun = checkPermissions(profileId, activity);
         if(!canRun)
             return;
-        runVolumeController(profileId, context);
+        runVolumeController(profileId, activity);
     }
 
     public static void stop(Context context){
@@ -20,9 +32,11 @@ public class VolumeControllerUtils {
         context.stopService(intent);
     }
 
-    private static boolean checkPermissions(){
-        //TODO: sprawdz czy powiadomienia wlaczone;
-        // też lokalizacja czy wlaczona i czy mozna uzywac
+    private static boolean checkPermissions(int profileId, Activity activity){
+        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, profileId);
+            return false;//TODO: torche sie jeszcze pobawic
+        }
         return true;
     }
 

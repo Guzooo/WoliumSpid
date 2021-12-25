@@ -1,8 +1,8 @@
 package pl.Guzooo.WoliumSpid;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -17,12 +17,12 @@ import java.util.List;
 
 import pl.Guzooo.Base.Elements.BusinessCard;
 import pl.Guzooo.Base.ModifiedElements.GActivity;
-import pl.Guzooo.Base.Utils.ColorUtils;
 import pl.Guzooo.Base.Utils.FullScreenUtils;
 import pl.Guzooo.Base.Utils.ThemeUtils;
 import pl.Guzooo.WoliumSpid.Adapters.AdapterProfile;
 import pl.Guzooo.WoliumSpid.Database.ProfileWithStages;
 import pl.Guzooo.WoliumSpid.Utils.NotificationChannelUtils;
+import pl.Guzooo.WoliumSpid.Utils.PermissionsRequestUtils;
 import pl.Guzooo.WoliumSpid.Utils.VolumeControllerUtils;
 
 public class MainActivity extends GActivity {
@@ -49,6 +49,12 @@ public class MainActivity extends GActivity {
         setFullScreen();
         setBusinessCard();
         setProfiles();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        PermissionsRequestUtils.localizationOnRunProfile(requestCode, grantResults, this);
     }
 
     public void onClickAddProfile(View v){
@@ -83,7 +89,7 @@ public class MainActivity extends GActivity {
     }
 
     private void setProfiles(){
-        AdapterProfile.ProfileListener profileListener = getProfileListener();
+        AdapterProfile.ProfileListener profileListener = getProfileListener(this);
         AdapterProfile adapterProfile = new AdapterProfile(profileListener);
         viewModel.getProfilesWithStages().observe(this, getObserverProfile(adapterProfile));
 
@@ -120,18 +126,18 @@ public class MainActivity extends GActivity {
         return getResources().getDimensionPixelOffset(R.dimen.margin_biggest);
     }
 
-    private AdapterProfile.ProfileListener getProfileListener(){
+    private AdapterProfile.ProfileListener getProfileListener(Activity activity){
         return new AdapterProfile.ProfileListener() {
             @Override
             public void onClickMainView(int id) {
-                Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                Intent intent = new Intent(activity, ProfileActivity.class);
                 intent.putExtra(ProfileActivity.EXTRA_ID, id);
                 startActivity(intent);
             }
 
             @Override
             public void onClickPlay(int id) {
-                VolumeControllerUtils.run(id, getApplicationContext());
+                VolumeControllerUtils.run(id, activity);
             }
         };
     }

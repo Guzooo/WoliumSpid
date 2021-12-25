@@ -1,10 +1,10 @@
 package pl.Guzooo.WoliumSpid;
 
-import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -14,7 +14,6 @@ import android.os.Handler;
 import android.widget.Toast;
 
 import androidx.annotation.IntDef;
-import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.lifecycle.LifecycleService;
 
@@ -24,6 +23,7 @@ import java.util.List;
 import pl.Guzooo.Base.Utils.ColorUtils;
 import pl.Guzooo.WoliumSpid.Database.Stage;
 import pl.Guzooo.WoliumSpid.Utils.NotificationChannelUtils;
+import pl.Guzooo.WoliumSpid.Utils.VolumeControllerUtils;
 
 public class VolumeControllerService extends LifecycleService {
 
@@ -65,10 +65,11 @@ public class VolumeControllerService extends LifecycleService {
         int profileId = intent.getIntExtra(EXTRA_ID, 0);
         if (profileId == 0)
             emergencyStop(EMERGENCY_STOP_NO_INFO_TEXT);
-        viewModel.getProfile(profileId).observe(this, profileWithStages -> {
-            resetCurrentStage();
-            updateNotification();
-        });
+        else
+            viewModel.getProfile(profileId).observe(this, profileWithStages -> {
+                resetCurrentStage();
+                updateNotification();
+            });
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -78,6 +79,7 @@ public class VolumeControllerService extends LifecycleService {
         super.onDestroy();
     }
 
+    @SuppressLint("MissingPermission")
     private void setLocationManager() {
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         locationListener = getLocationListener();
@@ -106,23 +108,21 @@ public class VolumeControllerService extends LifecycleService {
                 updateNotification();
                 Toast.makeText(getApplicationContext(), "Lokalizacja", Toast.LENGTH_SHORT).show();
                 supportForProfilelessSession();
-                //TODO: jak pięć razy będzie bez profilu to emergency stop;
-                // "nie znaleziono profilu"
             }
 
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras) {
-                Toast.makeText(getApplicationContext(), "Zmiana statusu na: " + status, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Zmiana statusu na: " + status, Toast.LENGTH_SHORT).show();//TODO: poczytać
             }
 
             @Override
             public void onProviderEnabled(String provider) {
-                Toast.makeText(getApplicationContext(), "Enabled Prov", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "GPS Włączony", Toast.LENGTH_SHORT).show();//TODO: string
             }
 
             @Override
             public void onProviderDisabled(String provider) {
-                Toast.makeText(getApplicationContext(), "Disabled Prov", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "GPS Wyłączony", Toast.LENGTH_SHORT).show();//TODO: string, powiadomienie inne "WARNING"
             }
         };
     }
@@ -171,14 +171,15 @@ public class VolumeControllerService extends LifecycleService {
         int accentColor = ColorUtils.getColorFromAttr(R.attr.colorGAccent, this);
         String title = viewModel.getProfileName(this);
         String text = getNotificationText();
+        PendingIntent finishIntent = VolumeControllerUtils.getStopPendingIntent(this);
         return new NotificationCompat.Builder(this, NotificationChannelUtils.VOLUME_CONTROLLER_CHANNEL_ID)
                  .setSmallIcon(R.drawable.ic_notification_volume_controller)
                  .setColor(accentColor)
                  .setPriority(Notification.PRIORITY_LOW)
                  .setContentTitle(title)
                  .setContentText(text)
-                 //TODO: przycisk zakończ
-                 // ticker
+                .addAction(R.drawable.ic_play_arrow, "ZAKOńCZ",  finishIntent)//TODO: stop icon
+                 //TODO: ticker
                  // when
                  // category
                  .build();
@@ -197,8 +198,6 @@ public class VolumeControllerService extends LifecycleService {
     }
 
     private boolean compareCurrentSpeed(@CompareMode int mode, float compareTo){
-        if(currentSpeeds.size() < 5)
-            return false;
         int compatible = 0;
         for(int i = 0; i < currentSpeeds.size(); i++){
             if(mode == SMALLER_THAN && currentSpeeds.get(i) < compareTo)
@@ -206,7 +205,7 @@ public class VolumeControllerService extends LifecycleService {
             else if(mode == GREATER_OR_EQUAL_TO && currentSpeeds.get(i) >= compareTo)
                 compatible++;
         }
-        if(compatible >= 3)
+        if(compatible > currentSpeeds.size()/2)
             return true;
         return false;
     }

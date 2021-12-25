@@ -22,6 +22,7 @@ import pl.Guzooo.WoliumSpid.Adapters.AdapterStage;
 import pl.Guzooo.WoliumSpid.Database.Profile;
 import pl.Guzooo.WoliumSpid.Database.ProfileWithStages;
 import pl.Guzooo.WoliumSpid.Database.Stage;
+import pl.Guzooo.WoliumSpid.Utils.PermissionsRequestUtils;
 
 public class ProfileActivity extends GActivity {
 
@@ -73,6 +74,12 @@ public class ProfileActivity extends GActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        PermissionsRequestUtils.localizationOnRunProfile(requestCode, grantResults, this);
     }
 
     @Override
