@@ -33,6 +33,8 @@
 
     <string name="looking_profile">I\'m looking for the profile…</string>
     <string name="profile_not_found">The profile or its stages was not found</string>
-    <string name="stage_and_speed_info">Stage #%1$d • Speed: %2$.2fkm/h</string>
-    <string name="unset_stage_and_speed_info">Stage is unset • Speed: %1$.2fkm/h</string>
+    <string name="stage_and_speed_info_with_separator">Stage #%1$d • Speed: %2$.2fkm/h</string>
+    <string name="unset_stage_and_speed_info_with_separator">Stage is unset • Speed: %1$.2fkm/h</string>
+    <string name="stage_and_speed_info_double_line">Stage #%1$d\nSpeed: %2$.2fkm/h</string>
+    <string name="unset_stage_and_speed_info_double_line">Stage is unset\nSpeed: %1$.2fkm/h</string>
 </resources>

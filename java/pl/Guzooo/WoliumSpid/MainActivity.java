@@ -31,6 +31,8 @@ public class MainActivity extends GActivity {
     private View addFAB;
     private View settingsFAB;
 
+    private MainActivityVolumeControllerHub rightSpace = new MainActivityVolumeControllerHub();
+
     @Override
     public int getBottomPadding() {
         int bottom = addFAB.getHeight();
@@ -73,6 +75,7 @@ public class MainActivity extends GActivity {
         viewModel = new ViewModelProvider(this).get(MainViewModel.class);
         addFAB = findViewById(R.id.add_fab);
         settingsFAB = findViewById(R.id.settings_fab);
+        rightSpace.initialization(this);
     }
 
     private void setFullScreen(){

@@ -41,9 +41,9 @@ public class VolumeControllerService extends LifecycleService {
     private final int MINIMAL_DISTANCE_TO_LOCATION_CHANGE = 0;
 
     private final int EMERGENCY_STOP_NO_INFO_TEXT = 0;
-    private final int CURRENT_STAGE_UNSET = -1;
+    public static final int CURRENT_STAGE_UNSET = -1;
 
-    private VolumeControllerViewModel viewModel;
+    private VolumeControllerData viewModel;
     private LocationManager locationManager;
     private LocationListener locationListener;
     Handler changeVolume = new Handler();
@@ -55,7 +55,8 @@ public class VolumeControllerService extends LifecycleService {
     @Override
     public void onCreate() {
         super.onCreate();
-        viewModel = new VolumeControllerViewModel(getApplication());
+        viewModel = new VolumeControllerData(getApplication());
+        VolumeControllerData.getIsWork().setValue(true);
         setLocationManager();
         startForeground(NOTIFICATION_ID, getNotification());
     }
@@ -67,7 +68,7 @@ public class VolumeControllerService extends LifecycleService {
             emergencyStop(EMERGENCY_STOP_NO_INFO_TEXT);
         else
             viewModel.getProfile(profileId).observe(this, profileWithStages -> {
-                resetCurrentStage();
+                setCurrentStage(CURRENT_STAGE_UNSET);
                 updateNotification();
             });
         return super.onStartCommand(intent, flags, startId);
@@ -75,6 +76,7 @@ public class VolumeControllerService extends LifecycleService {
 
     @Override
     public void onDestroy() {
+        VolumeControllerData.getIsWork().setValue(false);
         locationManager.removeUpdates(locationListener);
         super.onDestroy();
     }
@@ -95,10 +97,6 @@ public class VolumeControllerService extends LifecycleService {
         stopSelf();
     }
 
-    private void resetCurrentStage(){
-        currentStage = CURRENT_STAGE_UNSET;
-    }
-
     private LocationListener getLocationListener(){
         return new LocationListener() {
             @Override
@@ -106,7 +104,6 @@ public class VolumeControllerService extends LifecycleService {
                 addCurrentSpeed(location.getSpeed() *60*60/1000);//KilometersPerSeconds;
                 controlVolume();
                 updateNotification();
-                Toast.makeText(getApplicationContext(), "Lokalizacja", Toast.LENGTH_SHORT).show();
                 supportForProfilelessSession();
             }
 
@@ -134,12 +131,17 @@ public class VolumeControllerService extends LifecycleService {
         if(stages.isEmpty())
             return;
         if(nextStage < stages.size() && compareCurrentSpeed(GREATER_OR_EQUAL_TO, stages.get(nextStage).getSpeed())) {
-            currentStage = nextStage;
+            setCurrentStage(nextStage);
             setVolumeByCurrentStage();
         } else if(previewStage >= 0 && compareCurrentSpeed(SMALLER_THAN, stages.get(currentStage).getSpeed())) {
-            currentStage = previewStage;
+            setCurrentStage(previewStage);
             setVolumeByCurrentStage();
         }
+    }
+
+    private void setCurrentStage(int newStage){
+        currentStage = newStage;
+        VolumeControllerData.getCurrentStage().setValue(newStage);
     }
 
     private void setVolumeByCurrentStage(){
@@ -187,14 +189,15 @@ public class VolumeControllerService extends LifecycleService {
 
     private String getNotificationText(){
         if (currentStage == CURRENT_STAGE_UNSET)
-            return getString(R.string.unset_stage_and_speed_info, getCurrentSpeed());
-        return getString(R.string.stage_and_speed_info, currentStage+1, getCurrentSpeed());
+            return getString(R.string.unset_stage_and_speed_info_with_separator, getCurrentSpeed());
+        return getString(R.string.stage_and_speed_info_with_separator, currentStage+1, getCurrentSpeed());
     }
 
     private void addCurrentSpeed(float speed){
         if(currentSpeeds.size() == 5)
             currentSpeeds.remove(0);
         currentSpeeds.add(speed);
+        VolumeControllerData.getCurrentSpeed().setValue(speed);
     }
 
     private boolean compareCurrentSpeed(@CompareMode int mode, float compareTo){
