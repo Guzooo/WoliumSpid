@@ -23,17 +23,21 @@ import pl.Guzooo.WoliumSpid.Database.Profile;
 import pl.Guzooo.WoliumSpid.Database.ProfileWithStages;
 import pl.Guzooo.WoliumSpid.Database.Stage;
 import pl.Guzooo.WoliumSpid.Utils.PermissionsRequestUtils;
+import pl.Guzooo.WoliumSpid.Utils.VolumeControllerUtils;
 
 public class ProfileActivity extends GActivity {
 
     public final static String EXTRA_ID = "extraid";
     public final static int LAST_PROFILE = 0;
 
+    private int id;
     private ProfileViewModel profileViewModel;
     private StageViewModel stageViewModel;
     private TitleChanger titleChanger;
     private View addFab;
     private RecyclerView recyclerStage;
+    private AdapterStage adapterStage;
+    private int lastStage = -1;
 
     @Override
     public int getBottomPadding() {
@@ -51,6 +55,7 @@ public class ProfileActivity extends GActivity {
         setFullScreen();
         setTitleChanger();
         setStages();
+        setActiveDependence();
     }
 
     @Override
@@ -60,13 +65,25 @@ public class ProfileActivity extends GActivity {
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        boolean work = isThisProfileWork();
+        boolean haveStages = adapterStage.getCurrentList().size() > 0;
+        menu.findItem(R.id.stop).setVisible(work);
+        menu.findItem(R.id.run).setVisible(!work && haveStages);//TODO: albo disable
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.edit_title:
                 titleChanger.show();
                 return true;
             case R.id.run:
-                //TODO: włącz profil
+                VolumeControllerUtils.run(id, this);
+                return true;
+            case R.id.stop:
+                VolumeControllerUtils.stop(this);
                 return true;
             case R.id.delete:
                 profileViewModel.deleteProfile();
@@ -120,8 +137,8 @@ public class ProfileActivity extends GActivity {
 
     private void setStages(){
         AdapterStage.StageListener stageListener = getStageListener();
-        AdapterStage adapterStage = new AdapterStage(stageListener);
-        int id = getIntent().getIntExtra(EXTRA_ID, -1);
+        adapterStage = new AdapterStage(stageListener);
+        id = getIntent().getIntExtra(EXTRA_ID, -1);
         profileViewModel.getProfile(id).observe(this, getObserverStage(adapterStage));
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -129,18 +146,24 @@ public class ProfileActivity extends GActivity {
         recyclerStage.setAdapter(adapterStage);
     }
 
+    private void setActiveDependence(){
+        VolumeControllerData.getCurrentId().observe(this, integer -> markActiveStages());
+        VolumeControllerData.getIsWork().observe(this, aBoolean -> {
+            markActiveStages();
+            invalidateOptionsMenu();
+        });
+        VolumeControllerData.getCurrentStage().observe(this, integer -> markActiveStages());
+    }
+
     private int getMarginBiggest(){
         return getResources().getDimensionPixelOffset(R.dimen.margin_biggest);
     }
 
     private OnApplyWindowInsetsListener getWindowsInsertsListener(){
-        return new OnApplyWindowInsetsListener() {
-            @Override
-            public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
-                setInsets(insets);
-                setAddFabSpacing(insets);
-                return insets;
-            }
+        return (v, insets) -> {
+            setInsets(insets);
+            setAddFabSpacing(insets);
+            return insets;
         };
     }
 
@@ -150,33 +173,54 @@ public class ProfileActivity extends GActivity {
     }
 
     private AdapterStage.StageListener getStageListener(){
-        return new AdapterStage.StageListener() {
-            @Override
-            public void onClick(Stage stage) {
-                Stage newStage = stage.clone();
-                stageViewModel.setMaxOrder(profileViewModel.getCountOfStages());
-                stageViewModel.setStage(newStage);
-                new StageFragment().show(getSupportFragmentManager());
-            }
+        return stage -> {
+            Stage newStage = stage.clone();
+            stageViewModel.setMaxOrder(profileViewModel.getCountOfStages());
+            stageViewModel.setStage(newStage);
+            new StageFragment().show(getSupportFragmentManager());
         };
     }
 
     private Observer<ProfileWithStages> getObserverStage(AdapterStage adapter){
-        return new Observer<ProfileWithStages>() {
-            @Override
-            public void onChanged(ProfileWithStages profileWithStages) {
-                if (profileWithStages == null) {
-                    finish();
-                    return;
-                }
-                Profile profile = profileWithStages.getProfile();
-                List<Stage> stages = profileWithStages.getStages();
-                adapter.submitList(stages);
-                getSupportActionBar().setTitle(profile.getName(getApplicationContext()));
-                titleChanger.setEditText(profile.getName());
-                //TODO: animacja
+        return profileWithStages -> {
+            if (profileWithStages == null) {
+                finish();
+                return;
             }
+            Profile profile = profileWithStages.getProfile();
+            List<Stage> stages = profileWithStages.getStages();
+            adapter.submitList(stages);
+            markActiveStages();
+            getSupportActionBar().setTitle(profile.getName(getApplicationContext()));
+            titleChanger.setEditText(profile.getName());
+            invalidateOptionsMenu();
+            //TODO: animacja
         };
+    }
+
+    private void markActiveStages(){
+        if(isThisProfileWork()){
+            int activeStage = VolumeControllerData.getCurrentStage().getValue();
+            setActive(lastStage, false);
+            setActive(activeStage, true);
+            lastStage = activeStage;
+        } else if (!VolumeControllerData.getIsWork().getValue())
+            setActive(lastStage, false);
+    }
+
+    private boolean isThisProfileWork(){
+        if(VolumeControllerData.getCurrentId().getValue() != id)
+            return false;
+        if(!VolumeControllerData.getIsWork().getValue())
+            return false;
+        return true;
+    }
+
+    private void setActive(int stage, boolean active){
+        if (stage >= 0 && stage < adapterStage.getCurrentList().size()) {
+            adapterStage.getCurrentList().get(stage).setActive(active);
+            adapterStage.notifyItemChanged(stage);
+        }
     }
 
     private TitleChanger.TitleChangerListener getTitleChangeListener(){

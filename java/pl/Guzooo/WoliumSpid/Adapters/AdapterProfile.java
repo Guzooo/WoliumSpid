@@ -86,20 +86,10 @@ public class AdapterProfile extends ListAdapter<ProfileWithStages, ViewHolderPro
     }
 
     private View.OnClickListener getOnClickMainViewListener(int id){
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listener.onClickMainView(id);
-            }
-        };
+        return view -> listener.onClickMainView(id);
     }
 
     private View.OnClickListener getOnClickPlayListener(int id){
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listener.onClickPlay(id);
-            }
-        };
+        return view -> listener.onClickPlay(id);
     }
 }

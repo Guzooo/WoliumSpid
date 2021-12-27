@@ -15,22 +15,22 @@ import pl.Guzooo.WoliumSpid.Database.Stage;
 
 public class VolumeControllerData {
 
-    private Repository repository;
-    private int id = 0;
-    private LiveData<ProfileWithStages> profile = new MutableLiveData<>();
+    private static MutableLiveData<Integer> currentId = new MutableLiveData<>(0);
     private static MutableLiveData<Boolean> isWork = new MutableLiveData<>(false);
     private static MutableLiveData<String> currentTitle = new MutableLiveData<>("");
     private static MutableLiveData<Integer> currentStage = new MutableLiveData<>(VolumeControllerService.CURRENT_STAGE_UNSET);
     private static MutableLiveData<Float> currentSpeed = new MutableLiveData<>(0f);
+    private Repository repository;
+    private LiveData<ProfileWithStages> profile = new MutableLiveData<>();
 
     public VolumeControllerData(Application application) {
         repository = new Repository(application);
     }
 
     public LiveData<ProfileWithStages> getProfile(int id){
-        if(this.id != id) {
+        if(getCurrentId().getValue() != id) {
             profile = repository.getProfile(id);
-            this.id = id;
+            getCurrentId().setValue(id);
         }
         return profile;
     }
@@ -52,6 +52,10 @@ public class VolumeControllerData {
         return profile.getValue().getStages();
     }
 
+    public static MutableLiveData<Integer> getCurrentId(){
+        return currentId;
+    }
+
     public static MutableLiveData<Boolean> getIsWork(){
         return isWork;
     }
@@ -66,5 +70,13 @@ public class VolumeControllerData {
 
     public static MutableLiveData<Float> getCurrentSpeed(){
         return currentSpeed;
+    }
+
+    public static void resetAllCurrent(){
+        getCurrentId().setValue(0);
+        getIsWork().setValue(false);
+        getCurrentTitle().setValue("");
+        getCurrentStage().setValue(VolumeControllerService.CURRENT_STAGE_UNSET);
+        getCurrentSpeed().setValue(0f);
     }
 }

@@ -76,7 +76,7 @@ public class VolumeControllerService extends LifecycleService {
 
     @Override
     public void onDestroy() {
-        VolumeControllerData.getIsWork().setValue(false);
+        VolumeControllerData.resetAllCurrent();
         locationManager.removeUpdates(locationListener);
         super.onDestroy();
     }
