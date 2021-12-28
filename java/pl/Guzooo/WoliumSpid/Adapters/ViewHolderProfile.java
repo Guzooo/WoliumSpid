@@ -2,6 +2,7 @@ package pl.Guzooo.WoliumSpid.Adapters;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,7 +20,7 @@ public class ViewHolderProfile extends RecyclerView.ViewHolder {
 
     private ArrayList<VolumeBar> volumeBars = new ArrayList<>();
     private TextView title;
-    private View play;
+    private ImageView play;
 
     public ViewHolderProfile(View v){
         super(v);
@@ -53,6 +54,14 @@ public class ViewHolderProfile extends RecyclerView.ViewHolder {
         else
             play.setAlpha(0.5f);
         play.setEnabled(canPlay);
+    }
+
+    public void setWork(Profile profile){
+        boolean work = profile.isWork();
+        if(work)
+            play.setImageResource(R.drawable.ic_pause);
+        else
+            play.setImageResource(R.drawable.ic_play_arrow);
     }
 
     public void setOnClickMainViewListener(View.OnClickListener listener){

@@ -15,7 +15,11 @@ import pl.Guzooo.WoliumSpid.Database.Stage;
 
 public class VolumeControllerData {
 
-    private static MutableLiveData<Integer> currentId = new MutableLiveData<>(0);
+    //TODO:stała z service przenissc tutuaj
+
+    private static final int UNWORKED_PROFILE = 0;
+
+    private static MutableLiveData<Integer> currentId = new MutableLiveData<>(UNWORKED_PROFILE);
     private static MutableLiveData<Boolean> isWork = new MutableLiveData<>(false);
     private static MutableLiveData<String> currentTitle = new MutableLiveData<>("");
     private static MutableLiveData<Integer> currentStage = new MutableLiveData<>(VolumeControllerService.CURRENT_STAGE_UNSET);
@@ -72,8 +76,14 @@ public class VolumeControllerData {
         return currentSpeed;
     }
 
+    public static boolean isWork(){
+        if(getCurrentId().getValue() == UNWORKED_PROFILE)
+            return false;
+        return true;
+    }
+
     public static void resetAllCurrent(){
-        getCurrentId().setValue(0);
+        getCurrentId().setValue(UNWORKED_PROFILE);
         getIsWork().setValue(false);
         getCurrentTitle().setValue("");
         getCurrentStage().setValue(VolumeControllerService.CURRENT_STAGE_UNSET);

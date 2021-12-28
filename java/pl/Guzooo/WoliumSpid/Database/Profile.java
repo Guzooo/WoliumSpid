@@ -4,6 +4,7 @@ import android.content.Context;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import pl.Guzooo.WoliumSpid.R;
@@ -20,6 +21,8 @@ public class Profile{
     private int id;
     @ColumnInfo(name = NAME)
     private String name = "";
+    @Ignore
+    private boolean work = false;
 
     public int getId() {
         return id;
@@ -41,5 +44,13 @@ public class Profile{
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isWork(){
+        return work;
+    }
+
+    public void setWork(boolean work){
+        this.work = work;
     }
 }

@@ -18,7 +18,7 @@ public class AdapterProfile extends ListAdapter<ProfileWithStages, ViewHolderPro
 
     private ProfileListener listener;
 
-    public interface ProfileListener{
+    public interface ProfileListener {
         void onClickMainView(int id);
         void onClickPlay(int id);
     }
@@ -42,16 +42,24 @@ public class AdapterProfile extends ListAdapter<ProfileWithStages, ViewHolderPro
         holder.setVolumeBars(stages);
         holder.setTitle(profile);
         holder.setPlay(stages.size() > 0);
+        holder.setWork(profile);
         setClickListeners(profileWithStages, holder);
     }
 
-    private static DiffUtil.ItemCallback<ProfileWithStages> getDiffCallback(){
+    public int getItemPosition(int id){
+        for(int i = 0; i < getCurrentList().size(); i++)
+            if(getCurrentList().get(i).getProfile().getId() == id)
+                return i;
+        return -1;
+    }
+
+    private static DiffUtil.ItemCallback<ProfileWithStages> getDiffCallback() {
         return new DiffUtil.ItemCallback<ProfileWithStages>() {
             @Override
             public boolean areItemsTheSame(ProfileWithStages oldItem, ProfileWithStages newItem) {
                 Profile oldProfile = oldItem.getProfile();
                 Profile newProfile = newItem.getProfile();
-                if(oldProfile.getId() == newProfile.getId())
+                if (oldProfile.getId() == newProfile.getId())
                     return true;
                 return false;
             }
@@ -62,34 +70,28 @@ public class AdapterProfile extends ListAdapter<ProfileWithStages, ViewHolderPro
                 Profile newProfile = newItem.getProfile();
                 List<Stage> oldStages = oldItem.getStages();
                 List<Stage> newStages = newItem.getStages();
-                if(!oldProfile.getName().equals(newProfile.getName()))
+                if (!oldProfile.getName().equals(newProfile.getName()))
                     return false;
                 if (oldProfile.getName().equals("") && oldProfile.getId() != newProfile.getId())
-                     return false;
-                if(oldStages.size() != newStages.size() && (oldStages.size() < 10 || newStages.size() < 10))
                     return false;
-                for(int i = 0; i < 10 && i < oldStages.size(); i++){
-                    if(oldStages.get(i).getVolume() != newStages.get(i).getVolume())
+                if (oldStages.size() != newStages.size() && (oldStages.size() < 10 || newStages.size() < 10))
+                    return false;
+                for (int i = 0; i < 10 && i < oldStages.size(); i++) {
+                    if (oldStages.get(i).getVolume() != newStages.get(i).getVolume())
                         return false;
                 }
+                if(oldProfile.isWork() != newProfile.isWork())
+                    return false;
                 return true;
             }
         };
     }
 
-    private void setClickListeners(ProfileWithStages profileWithStages, ViewHolderProfile holder){
+    private void setClickListeners(ProfileWithStages profileWithStages, ViewHolderProfile holder) {
         int id = profileWithStages.getProfile().getId();
-        View.OnClickListener onClickMainViewListener = getOnClickMainViewListener(id);
-        View.OnClickListener onClickPlayListener = getOnClickPlayListener(id);
+        View.OnClickListener onClickMainViewListener = view -> listener.onClickMainView(id);
+        View.OnClickListener onClickPlayListener = view -> listener.onClickPlay(id);
         holder.setOnClickMainViewListener(onClickMainViewListener);
         holder.setOnClickPlayListener(onClickPlayListener);
-    }
-
-    private View.OnClickListener getOnClickMainViewListener(int id){
-        return view -> listener.onClickMainView(id);
-    }
-
-    private View.OnClickListener getOnClickPlayListener(int id){
-        return view -> listener.onClickPlay(id);
     }
 }

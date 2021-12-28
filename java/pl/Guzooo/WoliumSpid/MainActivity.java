@@ -30,6 +30,8 @@ public class MainActivity extends GActivity {
     private MainViewModel viewModel;
     private View addFAB;
     private View settingsFAB;
+    private AdapterProfile adapterProfile;
+    private int lastProfile = -1;
 
     private MainActivityVolumeControllerHub rightSpace = new MainActivityVolumeControllerHub();
 
@@ -51,6 +53,7 @@ public class MainActivity extends GActivity {
         setFullScreen();
         setBusinessCard();
         setProfiles();
+        setWorkDependence();
     }
 
     @Override
@@ -93,7 +96,7 @@ public class MainActivity extends GActivity {
 
     private void setProfiles(){
         AdapterProfile.ProfileListener profileListener = getProfileListener(this);
-        AdapterProfile adapterProfile = new AdapterProfile(profileListener);
+        adapterProfile = new AdapterProfile(profileListener);
         viewModel.getProfilesWithStages().observe(this, getObserverProfile(adapterProfile));
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -102,15 +105,16 @@ public class MainActivity extends GActivity {
         recyclerProfile.setAdapter(adapterProfile);
     }
 
+    private void setWorkDependence(){
+        VolumeControllerData.getCurrentId().observe(this, integer -> markWorkProfile());
+    }
+
     private OnApplyWindowInsetsListener getWindowsInsetsListener(){
-        return new OnApplyWindowInsetsListener() {
-            @Override
-            public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
-                setInsets(insets);
-                setAddFabSpacing(insets);
-                setSettingsFabSpacing(insets);
-                return insets;
-            }
+        return (v, insets) -> {
+            setInsets(insets);
+            setAddFabSpacing(insets);
+            setSettingsFabSpacing(insets);
+            return insets;
         };
     }
 
@@ -146,11 +150,25 @@ public class MainActivity extends GActivity {
     }
 
     private Observer<List<ProfileWithStages>> getObserverProfile(AdapterProfile adapter){
-        return new Observer<List<ProfileWithStages>>() {
-            @Override
-            public void onChanged(List<ProfileWithStages> profilesWithStages) {
-                adapter.submitList(profilesWithStages);
-            }
-        };
+        return profilesWithStages -> adapter.submitList(profilesWithStages, this::markWorkProfile);
+    }
+
+    private void markWorkProfile(){
+        if(VolumeControllerData.getIsWork().getValue()) {
+            int activeProfileId = VolumeControllerData.getCurrentId().getValue();
+            int activeProfile = adapterProfile.getItemPosition(activeProfileId);
+            setWork(lastProfile, false);
+            setWork(activeProfile, true);
+            lastProfile = activeProfile;
+        } else {
+            setWork(lastProfile, false);
+        }
+    }
+
+    private void setWork(int position, boolean work){
+        if(position >= 0 && position < adapterProfile.getCurrentList().size()){
+            adapterProfile.getCurrentList().get(position).getProfile().setWork(work);
+            adapterProfile.notifyItemChanged(position);
+        }
     }
 }

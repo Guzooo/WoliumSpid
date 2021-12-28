@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 
 import androidx.core.app.ActivityCompat;
 
+import pl.Guzooo.WoliumSpid.VolumeControllerData;
 import pl.Guzooo.WoliumSpid.VolumeControllerService;
 
 public class VolumeControllerUtils {
@@ -20,7 +21,10 @@ public class VolumeControllerUtils {
     }
 
     public static void run(int profileId, Activity activity){
-        //TODO: jeżeli id jest takie samo jak VolumeControllerData to zatrzymaj Service;
+        if(VolumeControllerData.getCurrentId().getValue() == profileId) {
+            stop(activity);
+            return;
+        }
         boolean canRun = checkPermissions(profileId, activity);
         if(!canRun)
             return;

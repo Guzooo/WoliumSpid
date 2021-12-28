@@ -69,7 +69,7 @@ public class ProfileActivity extends GActivity {
         boolean work = isThisProfileWork();
         boolean haveStages = adapterStage.getCurrentList().size() > 0;
         menu.findItem(R.id.stop).setVisible(work);
-        menu.findItem(R.id.run).setVisible(!work && haveStages);//TODO: albo disable
+        menu.findItem(R.id.run).setVisible(!work && haveStages);
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -147,11 +147,11 @@ public class ProfileActivity extends GActivity {
     }
 
     private void setActiveDependence(){
-        VolumeControllerData.getCurrentId().observe(this, integer -> markActiveStages());
         VolumeControllerData.getIsWork().observe(this, aBoolean -> {
             markActiveStages();
             invalidateOptionsMenu();
         });
+        VolumeControllerData.getCurrentId().observe(this, integer -> markActiveStages());
         VolumeControllerData.getCurrentStage().observe(this, integer -> markActiveStages());
     }
 
@@ -189,8 +189,7 @@ public class ProfileActivity extends GActivity {
             }
             Profile profile = profileWithStages.getProfile();
             List<Stage> stages = profileWithStages.getStages();
-            adapter.submitList(stages);
-            markActiveStages();
+            adapter.submitList(stages, this::markActiveStages);
             getSupportActionBar().setTitle(profile.getName(getApplicationContext()));
             titleChanger.setEditText(profile.getName());
             invalidateOptionsMenu();
