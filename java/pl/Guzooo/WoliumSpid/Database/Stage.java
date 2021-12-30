@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey;
 import static pl.Guzooo.WoliumSpid.Database.Stage.DATABASE_NAME;
 
 @Entity(tableName = DATABASE_NAME)
-public class Stage implements Comparable{
+public class Stage implements Comparable<Stage>{
     public static final String DATABASE_NAME = "stages";
     public static final String ID = "_id";
     public static final String PROFILE_ID = "profile_id";
@@ -99,8 +99,7 @@ public class Stage implements Comparable{
     }
 
     @Override
-    public int compareTo(Object o) {
-        Stage otherStage = (Stage) o;
-        return Integer.compare(order, otherStage.order);
+    public int compareTo(Stage stage) {
+        return Integer.compare(order, stage.order);
     }
 }

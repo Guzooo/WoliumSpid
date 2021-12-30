@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/volume_bar_background"
-        app:tint="?attr/colorGPrimaryDark"/>
 
     <LinearLayout
         android:id="@+id/volume_bar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@drawable/volume_bar_background"
+        android:backgroundTint="?attr/colorGPrimaryDark">
 
         <Space
             android:layout_width="match_parent"

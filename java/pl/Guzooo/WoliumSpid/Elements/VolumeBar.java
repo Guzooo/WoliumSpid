@@ -24,7 +24,7 @@ public class VolumeBar extends FrameLayout {
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.volume_bar, this, true);
 
-        ViewGroup linearLayout = (ViewGroup) getChildAt(0);
+        ViewGroup linearLayout = findViewById(R.id.volume_bar);
         upView = linearLayout.getChildAt(0);
         downView = linearLayout.getChildAt(1);
     }
