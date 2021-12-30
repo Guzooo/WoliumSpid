@@ -32,7 +32,7 @@ public class Stage implements Comparable{
     @Ignore
     private boolean skip = false;
 
-    public Stage clone(){
+    public Stage duplicate(){
         Stage clone = new Stage();
         clone.setId(id);
         clone.setProfileId(profileId);

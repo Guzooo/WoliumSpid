@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="profile_run">Bieg - trzymaj tempo</string>
+    <string name="profile_bicycle">Jazda na rowerze</string>
+    <string name="profile_car">Samochód - przepisowa jazda</string>
+
+    <string name="profile">Profil %1$d</string>
+    <string name="run">Uruchom</string>
+    <string name="stop">Zakończ</string>
+
+    <string name="add_profile">Dodaj Profil</string>
+
+    <string name="profile_title_hint">Wpisz nazwę profilu</string>
+</resources>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="speed_start">Włącza się od %1$.2fkm/h</string>
+    <string name="active">AKTYWNY</string>
+
+    <string name="order">Kolejność</string>
+    <string name="volume">Głośność</string>
+    <string name="speed">Szybkość</string>
+    <string name="speed_hint">15.08</string>
+    <string name="speed_unit">km/h</string>
+    <string name="edit_stage">Edytuj Etap</string>
+
+    <string name="add_stage">Dodaj Etap</string>
+</resources>

@@ -174,7 +174,7 @@ public class ProfileActivity extends GActivity {
 
     private AdapterStage.StageListener getStageListener(){
         return stage -> {
-            Stage newStage = stage.clone();
+            Stage newStage = stage.duplicate();
             stageViewModel.setMaxOrder(profileViewModel.getCountOfStages());
             stageViewModel.setStage(newStage);
             new StageFragment().show(getSupportFragmentManager());

@@ -38,7 +38,7 @@
                 style="@style/Logo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:contentDescription="@string/g_logo"
+                android:contentDescription="@string/developer_logo"
                 android:src="@mipmap/logo_g"
                 android:layout_margin="@dimen/margin_standard"
                 app:layout_constraintBottom_toBottomOf="@id/business_card_g"
@@ -80,7 +80,7 @@
                 app:layout_constraintTop_toTopOf="@id/right_space"
                 app:layout_constraintStart_toStartOf="@id/right_space"
                 app:layout_constraintEnd_toStartOf="@id/right_space_icon"
-                app:layout_constraintBottom_toTopOf="@id/right_space_text"/><!--TODO: jenda linia, i kropki na koncu-->
+                app:layout_constraintBottom_toTopOf="@id/right_space_text"/>
 
             <TextView
                 android:id="@+id/right_space_text"

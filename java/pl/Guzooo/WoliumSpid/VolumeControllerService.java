@@ -48,7 +48,7 @@ public class VolumeControllerService extends LifecycleService {
     private LocationListener locationListener;
     Handler changeVolume = new Handler();
 
-    private int currentStage = -1; //TODO: możliwe że przeniesienie zmiennych do view model mogłoby uławić prace po wznowieniu usługi
+    private int currentStage = -1; //TODO: możliwe że przeniesienie zmiennych do view model mogłoby uławić prace po wznowieniu usługi // nie ma to znaczenia, ale może warto
     private ArrayList<Float> currentSpeeds = new ArrayList<>();
     private int timeWithoutProfile = 0;
 
@@ -109,17 +109,17 @@ public class VolumeControllerService extends LifecycleService {
 
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras) {
-                Toast.makeText(getApplicationContext(), "Zmiana statusu na: " + status, Toast.LENGTH_SHORT).show();//TODO: poczytać
+                //Toast.makeText(getApplicationContext(), "Zmiana statusu na: " + status, Toast.LENGTH_SHORT).show();//TODO: poczytać
             }
 
             @Override
             public void onProviderEnabled(String provider) {
-                Toast.makeText(getApplicationContext(), "GPS Włączony", Toast.LENGTH_SHORT).show();//TODO: string
+                //Toast.makeText(getApplicationContext(), "GPS Włączony", Toast.LENGTH_SHORT).show();//TODO: string, powiadomienie inne "WARNING"
             }
 
             @Override
             public void onProviderDisabled(String provider) {
-                Toast.makeText(getApplicationContext(), "GPS Wyłączony", Toast.LENGTH_SHORT).show();//TODO: string, powiadomienie inne "WARNING"
+                //Toast.makeText(getApplicationContext(), "GPS Wyłączony", Toast.LENGTH_SHORT).show();//TODO: string, powiadomienie inne "WARNING"
             }
         };
     }
@@ -173,18 +173,19 @@ public class VolumeControllerService extends LifecycleService {
         int accentColor = ColorUtils.getColorFromAttr(R.attr.colorGAccent, this);
         String title = viewModel.getProfileName(this);
         String text = getNotificationText();
+        String finishString = getString(R.string.stop);
         PendingIntent finishIntent = VolumeControllerUtils.getStopPendingIntent(this);
         return new NotificationCompat.Builder(this, NotificationChannelUtils.VOLUME_CONTROLLER_CHANNEL_ID)
-                 .setSmallIcon(R.drawable.ic_notification_volume_controller)
-                 .setColor(accentColor)
-                 .setPriority(Notification.PRIORITY_LOW)
-                 .setContentTitle(title)
-                 .setContentText(text)
-                .addAction(R.drawable.ic_play_arrow, "ZAKOńCZ",  finishIntent)//TODO: stop icon
-                 //TODO: ticker
-                 // when
-                 // category
-                 .build();
+                .setPriority(Notification.PRIORITY_LOW)
+                .setOnlyAlertOnce(true)
+                .setShowWhen(false)
+                .setCategory(NotificationCompat.CATEGORY_SERVICE)
+                .setSmallIcon(R.drawable.ic_notification_volume_controller)
+                .setColor(accentColor)
+                .setContentTitle(title)
+                .setContentText(text)
+                .addAction(R.drawable.ic_pause, finishString,  finishIntent)
+                .build();
     }
 
     private String getNotificationText(){

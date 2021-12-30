@@ -39,7 +39,7 @@ public class VolumeControllerUtils {
     private static boolean checkPermissions(int profileId, Activity activity){
         if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, profileId);
-            return false;//TODO: torche sie jeszcze pobawic
+            return false;//TODO:torche sie jeszcze pobawić // sprawdzić czy na nowym androdzie (10?) działa coarse i speed;
         }
         return true;
     }

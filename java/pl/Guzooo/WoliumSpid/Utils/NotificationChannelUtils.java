@@ -14,6 +14,7 @@ import androidx.annotation.StringDef;
 import androidx.core.app.NotificationManagerCompat;
 
 import pl.Guzooo.Base.Utils.FragmentationUtils;
+import pl.Guzooo.WoliumSpid.R;
 
 public class NotificationChannelUtils {
 
@@ -47,14 +48,16 @@ public class NotificationChannelUtils {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private static void createVolumeControllerChannel(Context context){
-        String name = "a"; //TODO: string
-        String description = "b"; //TODO: string
+        int name = R.string.volume_controller_channel_name;
+        int description = R.string.volume_controller_channel_description;
         int importance = NotificationManagerCompat.IMPORTANCE_LOW;
         createChannel(VOLUME_CONTROLLER_CHANNEL_ID, name, description, importance, context);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private static void createChannel(String id, String name, String description, int importance, Context context){
+    private static void createChannel(String id, int nameId, int descriptionId, int importance, Context context){
+        String name = context.getString(nameId);
+        String description = context.getString(descriptionId);
         NotificationChannel channel = new NotificationChannel(id, name, importance);
         channel.setDescription(description);
         context.getSystemService(NotificationManager.class).createNotificationChannel(channel);
@@ -82,7 +85,7 @@ public class NotificationChannelUtils {
     }
 
     private static void openChannelSettingsOnAndroidsBeforeOreo(Context context){//TODO:test czy działa + czy działa na najstarszym androidzie
-        Intent intent = new Intent("android.settings.APP_NOTIFICATION_SETTINGS");
+        Intent intent = new Intent("android.settings.APP_NOTIFICATION_SETTINGS");// zrobić tak, że w androidzie >= 8 jak wyłaczony kanał to do info o kanale,  a jak ogol to do ogolu otwiera
         intent.putExtra("app_package", context.getPackageName());
         intent.putExtra("app_uid", context.getApplicationInfo().uid);
         context.startActivity(intent);
