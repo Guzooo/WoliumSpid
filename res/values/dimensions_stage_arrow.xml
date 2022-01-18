@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="height_arrow_beam">16dp</dimen>
+    <dimen name="width_arrow">5dp</dimen>
+    <dimen name="margin_between_arrows">32dp</dimen>
+</resources>

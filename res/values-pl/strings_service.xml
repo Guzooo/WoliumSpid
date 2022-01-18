@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="looking_profile">Szukam profilu…</string>
+    <string name="profile_not_found">Profil lub jego etapy nie zostały znalezione</string>
+    <string name="stage_and_speed_info_with_separator">Etap #%1$d • Szybkość: %2$.2fkm/h</string>
+    <string name="unset_stage_and_speed_info_with_separator">Etap jest nieustawiony • Szybkość: %1$.2fkm/h</string>
+    <string name="stage_and_speed_info_double_line">Etap #%1$d\nSzybkość: %2$.2fkm/h</string>
+    <string name="unset_stage_and_speed_info_double_line">Etap jest nieustawiony\nSzybkość: %1$.2fkm/h</string>
+
+    <string name="volume_controller_channel_name">Usługa Kontroler Głośności</string>
+    <string name="volume_controller_channel_description">Pokazuje, że usługa jest uruchomiona, jej szczegóły i pozwala ją zatrzymać.</string>
+</resources>
