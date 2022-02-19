@@ -63,7 +63,9 @@ public class VolumeControllerService extends LifecycleService {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        int profileId = intent.getIntExtra(EXTRA_ID, 0);
+        int profileId = 0;
+        if(intent != null)
+            profileId = intent.getIntExtra(EXTRA_ID, 0);
         if (profileId == 0)
             emergencyStop(EMERGENCY_STOP_NO_INFO_TEXT);
         else
