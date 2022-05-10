@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.provider.Settings;
-import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 import androidx.annotation.StringDef;
@@ -51,15 +50,21 @@ public class NotificationChannelUtils {
         int name = R.string.volume_controller_channel_name;
         int description = R.string.volume_controller_channel_description;
         int importance = NotificationManagerCompat.IMPORTANCE_LOW;
-        createChannel(VOLUME_CONTROLLER_CHANNEL_ID, name, description, importance, context);
+        createChannel(VOLUME_CONTROLLER_CHANNEL_ID, name, description, importance, false, context);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private static void createChannel(String id, int nameId, int descriptionId, int importance, Context context){
+        createChannel(id, nameId, descriptionId, importance, true, context);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private static void createChannel(String id, int nameId, int descriptionId, int importance, boolean showBadge, Context context){
         String name = context.getString(nameId);
         String description = context.getString(descriptionId);
         NotificationChannel channel = new NotificationChannel(id, name, importance);
         channel.setDescription(description);
+        channel.setShowBadge(showBadge);
         context.getSystemService(NotificationManager.class).createNotificationChannel(channel);
     }
 
