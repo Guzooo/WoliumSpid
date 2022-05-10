@@ -177,6 +177,7 @@ public class VolumeControllerService extends LifecycleService {
         String text = getNotificationText();
         String finishString = getString(R.string.stop);
         PendingIntent finishIntent = VolumeControllerUtils.getStopPendingIntent(this);
+        PendingIntent openIntent = VolumeControllerUtils.getOpenPendingIntent(this);
         return new NotificationCompat.Builder(this, NotificationChannelUtils.VOLUME_CONTROLLER_CHANNEL_ID)
                 .setPriority(Notification.PRIORITY_LOW)
                 .setOnlyAlertOnce(true)
@@ -187,6 +188,7 @@ public class VolumeControllerService extends LifecycleService {
                 .setContentTitle(title)
                 .setContentText(text)
                 .addAction(R.drawable.ic_pause, finishString,  finishIntent)
+                .setContentIntent(openIntent)
                 .build();
     }
 

@@ -8,7 +8,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.TaskStackBuilder;
 
+import pl.Guzooo.WoliumSpid.ProfileActivity;
 import pl.Guzooo.WoliumSpid.VolumeControllerData;
 import pl.Guzooo.WoliumSpid.VolumeControllerService;
 
@@ -18,6 +20,14 @@ public class VolumeControllerUtils {
         Intent intent = getIntent(context);
         intent.putExtra(VolumeControllerService.EXTRA_ID, 0);
         return PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    public static PendingIntent getOpenPendingIntent(Context context){
+        Intent intent = new Intent(context, ProfileActivity.class);
+        intent.putExtra(ProfileActivity.EXTRA_ID, VolumeControllerData.getCurrentId().getValue());
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+        stackBuilder.addNextIntentWithParentStack(intent);
+        return stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
     }
 
     public static void run(int profileId, Activity activity){
