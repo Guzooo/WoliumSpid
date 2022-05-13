@@ -49,7 +49,7 @@ public class NotificationChannelUtils {
     private static void createVolumeControllerChannel(Context context){
         int name = R.string.volume_controller_channel_name;
         int description = R.string.volume_controller_channel_description;
-        int importance = NotificationManagerCompat.IMPORTANCE_LOW;
+        int importance = NotificationManagerCompat.IMPORTANCE_DEFAULT;
         createChannel(VOLUME_CONTROLLER_CHANNEL_ID, name, description, importance, false, context);
     }
 

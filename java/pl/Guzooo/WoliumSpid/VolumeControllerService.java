@@ -179,7 +179,7 @@ public class VolumeControllerService extends LifecycleService {
         PendingIntent finishIntent = VolumeControllerUtils.getStopPendingIntent(this);
         PendingIntent openIntent = VolumeControllerUtils.getOpenPendingIntent(this);
         return new NotificationCompat.Builder(this, NotificationChannelUtils.VOLUME_CONTROLLER_CHANNEL_ID)
-                .setPriority(Notification.PRIORITY_LOW)
+                .setPriority(Notification.PRIORITY_DEFAULT)
                 .setOnlyAlertOnce(true)
                 .setShowWhen(false)
                 .setCategory(NotificationCompat.CATEGORY_SERVICE)
