@@ -23,6 +23,17 @@ public class StageViewModel extends AndroidViewModel {
         repository = new Repository(application);
     }
 
+    public void moveStage(int profileId, int positionStart, int positionEnd){
+        WSDatabase.getExecutor().execute(() -> {
+            Stage stage = repository.getStageFromOneProfileByAdapterPosition(profileId, positionStart);
+            setStage(stage);
+            int change = positionEnd - positionStart;
+            int order = stage.getOrder();
+            stage.setOrder(order + change);
+            applyStageChange();
+        });
+    }
+
     public void applyStageChange(){
         WSDatabase.getExecutor().execute(() -> {
             tidyUpOtherStages();

@@ -23,6 +23,9 @@ public interface StageDao {
     @Delete
     void delete(Stage stage);
 
+    @Query("SELECT * FROM " + Stage.DATABASE_NAME + " WHERE " + Stage.PROFILE_ID + " = :profileId ORDER BY " + Stage.ORDER + " LIMIT :positionInAdapter, 1")
+    Stage getStageFromOneProfileByAdapterPosition(int profileId, int positionInAdapter);
+
     @Query("SELECT * FROM " + Stage.DATABASE_NAME + " WHERE " + Stage.PROFILE_ID + " = :profileId AND " + Stage.ORDER + " >= :orderMin")
     List<Stage> getStagesFromOneProfileWithOrderGreaterOrEqualsThan(int profileId, int orderMin);
 

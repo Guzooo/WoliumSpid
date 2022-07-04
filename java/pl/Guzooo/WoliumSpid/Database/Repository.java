@@ -73,6 +73,10 @@ public class Repository {
         return profileDao.getLast();
     }
 
+    public Stage getStageFromOneProfileByAdapterPosition(int profileId, int positionStart){
+        return stageDao.getStageFromOneProfileByAdapterPosition(profileId, positionStart);
+    }
+
     public List<Stage> getStagesFromOneProfileWithOrderGreaterOrEqualsThan(int profileId, int orderMin){
         return stageDao.getStagesFromOneProfileWithOrderGreaterOrEqualsThan(profileId, orderMin);
     }

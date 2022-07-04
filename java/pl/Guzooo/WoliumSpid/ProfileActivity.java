@@ -1,15 +1,19 @@
 package pl.Guzooo.WoliumSpid;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.OnApplyWindowInsetsListener;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -145,6 +149,39 @@ public class ProfileActivity extends GActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerStage.setLayoutManager(layoutManager);
         recyclerStage.setAdapter(adapterStage);
+
+        //TODO: dziła względnie poprawnie, mieszają się dwie opcje animacji i przez to dane się dziwnie zachowją
+        /*ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, 0) {
+            boolean dragging = false;
+            int fromPos = -1;
+            int toPos;
+
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                int positionBefore = viewHolder.getAbsoluteAdapterPosition();
+                toPos = target.getAbsoluteAdapterPosition();
+                adapterStage.notifyItemMoved(positionBefore, toPos);
+                if(fromPos == -1)
+                    fromPos = positionBefore;
+                return true;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+
+            }
+
+            @Override
+            public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
+                dragging = !dragging;
+                if(!dragging) {
+                    stageViewModel.moveStage(id, fromPos, toPos);
+                }
+                super.onSelectedChanged(viewHolder, actionState);
+            }
+
+        });
+        itemTouchHelper.attachToRecyclerView(recyclerStage);*/
     }
 
     private void setActiveDependence(){
