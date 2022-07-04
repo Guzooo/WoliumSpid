@@ -26,7 +26,7 @@ public class StageViewModel extends AndroidViewModel {
     public void applyStageChange(){
         WSDatabase.getExecutor().execute(() -> {
             tidyUpOtherStages();
-            if (stage.getId() == 0)
+            if (isNewStage())
                 repository.insertStage(stage);
             else
                 repository.updateStage(stage);
@@ -69,6 +69,7 @@ public class StageViewModel extends AndroidViewModel {
     public void refreshNextStageSpeedNext(int id, int order){
         WSDatabase.getExecutor().execute(() -> {
             float speed = repository.getSpeedNext(id, order);
+            speed = addSomeToZero(speed);
             nextStageSpeedNext.postValue(speed);
         });
     }
@@ -108,7 +109,12 @@ public class StageViewModel extends AndroidViewModel {
             int order = stage.getOrder();
             order += addToOrder;
             stage.setOrder(order);
-            repository.updateStage(stage);
         }
+        repository.updateStages(stages);
+    }
+    private float addSomeToZero(float speed){
+        if(speed == 0)
+            return 0.01f;
+        return speed;
     }
 }

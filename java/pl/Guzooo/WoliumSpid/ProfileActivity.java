@@ -22,6 +22,7 @@ import pl.Guzooo.WoliumSpid.Adapters.AdapterStage;
 import pl.Guzooo.WoliumSpid.Database.Profile;
 import pl.Guzooo.WoliumSpid.Database.ProfileWithStages;
 import pl.Guzooo.WoliumSpid.Database.Stage;
+import pl.Guzooo.WoliumSpid.Database.WSDatabase;
 import pl.Guzooo.WoliumSpid.Utils.PermissionsRequestUtils;
 import pl.Guzooo.WoliumSpid.Utils.VolumeControllerUtils;
 
@@ -187,14 +188,52 @@ public class ProfileActivity extends GActivity {
                 finish();
                 return;
             }
-            Profile profile = profileWithStages.getProfile();
-            List<Stage> stages = profileWithStages.getStages();
-            adapter.submitList(stages, this::markActiveStages);
-            getSupportActionBar().setTitle(profile.getName(getApplicationContext()));
-            titleChanger.setEditText(profile.getName());
-            invalidateOptionsMenu();
-            //TODO: animacja
+                Profile profile = profileWithStages.getProfile();
+                List<Stage> stages = profileWithStages.getStages();
+                getSupportActionBar().setTitle(profile.getName(getApplicationContext()));
+                titleChanger.setEditText(profile.getName());
+                invalidateOptionsMenu();
+                //TODO: animacja
+            WSDatabase.getExecutor().execute(() -> {
+                setStagesDependence(stages);
+                adapter.submitList(stages, this::markActiveStages);
+            });
+
         };
+    }
+
+    private void setStagesDependence(List<Stage> stages){
+        for(int i = 0; i < stages.size(); i++) {
+            Stage stage = stages.get(i);
+            if(i+1 == stages.size())
+                stage.setLast(true);
+            else
+                stage.setRealSpeedBack(stages.get(i+1));
+        }
+        setStagesDependenceOfSkipping(stages);
+    }
+
+    private void setStagesDependenceOfSkipping(List<Stage> stages){
+        if(stages.size() < 2)
+            return;
+        float lastSpeed = stages.get(0).getSpeedNext();
+        for(int i = 1; i < stages.size(); i++){
+            Stage previousStage = stages.get(i-1);
+            Stage stage = stages.get(i);
+            if(stage.getSpeedNext() <= lastSpeed)
+                previousStage.setSkipNext(true);
+            else
+                lastSpeed = stage.getSpeedNext();
+        }
+        lastSpeed = stages.get(stages.size()-2).getRealSpeedBack();
+        for(int i = stages.size()-3; i >= 0; i--){
+            Stage previousStage = stages.get(i+1);
+            Stage stage = stages.get(i);
+            if(stage.getRealSpeedBack() >= lastSpeed)
+                previousStage.setSkipBack(true);
+            else
+                lastSpeed = stage.getRealSpeedBack();
+        }
     }
 
     private void markActiveStages(){

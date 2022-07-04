@@ -41,6 +41,8 @@ public class Stage implements Comparable<Stage>{
     private boolean skipNext = false;
     @Ignore
     private boolean skipBack = false;
+    @Ignore
+    private boolean last = false;
 
     public Stage duplicate(){
         Stage clone = new Stage();
@@ -137,6 +139,14 @@ public class Stage implements Comparable<Stage>{
 
     public void setSkipBack(boolean skipBack){
         this.skipBack = skipBack;
+    }
+
+    public boolean isLast() {
+        return last;
+    }
+
+    public void setLast(boolean last){
+        this.last = last;
     }
 
     @Override

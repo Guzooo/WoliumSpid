@@ -168,11 +168,10 @@ public class StageFragment extends DialogFragment {
     private DialogInterface.OnClickListener getNeutralButtonListener(){
         return (dialogInterface, i) -> {
             dismiss();
-            WSDatabase.getExecutor().execute(() -> {
-                saveStage();
-                prepareNewStage();
-            });
+            saveStage();
+            prepareNewStage();
             show(getParentFragmentManager());
+            //TODO:przyjzec sie
         };
     }
 

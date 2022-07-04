@@ -31,12 +31,8 @@ public class AdapterStage extends ListAdapter<Stage, ViewHolderStage> {
     @Override
     public void onBindViewHolder(ViewHolderStage holder, int position) {
         Stage stage = getItem(position);
-        boolean isLastItem = position+1 == getItemCount();
-        View.OnClickListener onClickListener = getOnClickListener(stage);
-        if(!isLastItem)
-            stage.setRealSpeedBack(getItem(position+1));
+        View.OnClickListener onClickListener = view -> listener.onClick(stage);
         holder.setStageInfo(stage);
-        holder.setBottomArrows(isLastItem);
         holder.setOnClickMainViewListener(onClickListener);
     }
 
@@ -57,14 +53,11 @@ public class AdapterStage extends ListAdapter<Stage, ViewHolderStage> {
                         oldItem.getRealSpeedBack() != newItem.getRealSpeedBack() ||
                         oldItem.isSkipNext() != newItem.isSkipNext() ||
                         oldItem.isSkipBack() != newItem.isSkipBack() ||
-                        oldItem.isActive() != newItem.isActive())
+                        oldItem.isActive() != newItem.isActive() ||
+                        oldItem.isLast() != newItem.isLast())
                     return false;
                 return true;
             }
         };
-    }
-
-    private View.OnClickListener getOnClickListener(Stage stage){
-        return view -> listener.onClick(stage);
     }
 }

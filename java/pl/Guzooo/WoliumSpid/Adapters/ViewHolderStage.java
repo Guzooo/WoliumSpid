@@ -45,25 +45,18 @@ public class ViewHolderStage extends RecyclerView.ViewHolder {
         float speedNext = stage.getSpeedNext();
         float speedBack = stage.getRealSpeedBack();
         boolean active = stage.isActive();
+        boolean skipLeft = stage.isSkipNext();
+        boolean skipRight = stage.isSkipBack();
+        boolean last = stage.isLast();
         setTitle(order);
         setVolumeText(volume);
         setVolumeIcon(volume);
         setSpeedNext(speedNext);
         setSpeedBack(speedBack);
         setActive(active);
-    }
-
-    public void setBottomArrows(boolean isLastStage){
-        if(isLastStage) {
-            rightArrow.setVisibility(View.GONE);
-            speedBack.setVisibility(View.INVISIBLE);
-        } else {
-            rightArrow.setVisibility(View.VISIBLE);
-            speedBack.setVisibility(View.VISIBLE);
-        }
-        rightSkipArrow.setVisibility(View.GONE);
-        leftSkipArrow.setVisibility(View.GONE);
-        //TODO: ostatnia lewa strzałka powinna znikać
+        setLeftSkipArrow(skipLeft);
+        setRightSkipArrow(skipRight);
+        setRightArrow(last);
     }
 
     public void setOnClickMainViewListener(View.OnClickListener listener){
@@ -104,6 +97,30 @@ public class ViewHolderStage extends RecyclerView.ViewHolder {
             active.setVisibility(View.VISIBLE);
         else
             active.setVisibility(View.INVISIBLE);
+    }
+
+    private void setRightArrow(boolean isLastStage){
+        if(isLastStage) {
+            rightArrow.setVisibility(View.GONE);
+            speedBack.setVisibility(View.INVISIBLE);
+        } else {
+            rightArrow.setVisibility(View.VISIBLE);
+            speedBack.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void setLeftSkipArrow(boolean visible){
+        if(visible)
+            leftSkipArrow.setVisibility(View.VISIBLE);
+        else
+            leftSkipArrow.setVisibility(View.GONE);
+    }
+
+    private void setRightSkipArrow(boolean visible){
+        if(visible)
+            rightSkipArrow.setVisibility(View.VISIBLE);
+        else
+            rightSkipArrow.setVisibility(View.GONE);
     }
 
     private Context getContext(){
