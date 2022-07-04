@@ -2,15 +2,17 @@
 <resources>
     <string name="stage_order" translatable="false">#%1$d</string>
 
-    <string name="speed_start">It turns on from %1$.2fkm/h</string>
+    <string name="speed_next_turn_on">It turns on above\n%1$.2fkm/h</string>
+    <string name="speed_back_turn_on">It turns on below\n%1$.2fkm/h</string>
     <string name="active">ACTIVE</string>
 
     <string name="order">Order</string>
     <string name="volume">Volume</string>
-    <string name="speed">Speed</string>
-    <string name="speed_hint">15.08</string>
-    <string name="speed_unit">km/h</string>
+    <string name="speed_next">Turn on above</string>
+    <string name="speed_back">Turn on below</string>
+    <string name="speed_hint">0.00</string>
+    <string name="speed_unit" translatable="false">km/h</string>
+    <string name="speed_back_help"><b>Turns on below</b> is the speed below which the stage will activate as you slow down.\nBy default, it is set to the <b>turns on above</b> value of the next stage</string>
     <string name="edit_stage">Edit Stage</string>
-
     <string name="add_stage">Add Stage</string>
 </resources>

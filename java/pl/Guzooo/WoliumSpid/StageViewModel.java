@@ -3,6 +3,7 @@ package pl.Guzooo.WoliumSpid;
 import android.app.Application;
 
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.MutableLiveData;
 
 import java.util.List;
 
@@ -11,11 +12,11 @@ import pl.Guzooo.WoliumSpid.Database.Stage;
 import pl.Guzooo.WoliumSpid.Database.WSDatabase;
 
 public class StageViewModel extends AndroidViewModel {
-
     private Repository repository;
     private Stage stage;
     private int initialOrder;
     private int maxOrder;
+    private MutableLiveData<Float> nextStageSpeedNext = new MutableLiveData<>(0.00f);
 
     public StageViewModel(Application application){
         super(application);
@@ -23,11 +24,13 @@ public class StageViewModel extends AndroidViewModel {
     }
 
     public void applyStageChange(){
-        tidyUpOtherStages();
-        if (stage.getId() == 0)
-            repository.insertStage(stage);
-        else
-            repository.updateStage(stage);
+        WSDatabase.getExecutor().execute(() -> {
+            tidyUpOtherStages();
+            if (stage.getId() == 0)
+                repository.insertStage(stage);
+            else
+                repository.updateStage(stage);
+        });
     }
 
     public void deleteStage(){
@@ -38,13 +41,13 @@ public class StageViewModel extends AndroidViewModel {
         });
     }
 
+    public Stage getStage(){
+        return stage;
+    }
+
     public void setStage(Stage stage){
         this.stage = stage;
         initialOrder = stage.getOrder();
-    }
-
-    public Stage getStage(){
-        return stage;
     }
 
     public int getMaxOrder() {
@@ -59,8 +62,19 @@ public class StageViewModel extends AndroidViewModel {
         maxOrder++;
     }
 
+    public MutableLiveData<Float> getNextStageSpeedNext(){
+        return nextStageSpeedNext;
+    }
+
+    public void refreshNextStageSpeedNext(int id, int order){
+        WSDatabase.getExecutor().execute(() -> {
+            float speed = repository.getSpeedNext(id, order);
+            nextStageSpeedNext.postValue(speed);
+        });
+    }
+
     private void tidyUpOtherStages(){
-        if(stage.getId() == 0) {
+        if(isNewStage()) {
             List<Stage> stagesToTidy = repository.getStagesFromOneProfileWithOrderGreaterOrEqualsThan(stage.getProfileId(), stage.getOrder());
             doTidy(1, stagesToTidy);
         } else {
@@ -79,6 +93,12 @@ public class StageViewModel extends AndroidViewModel {
             List<Stage> stagesToTidy = repository.getStagesFromOneProfileWithOrderBetween(stage.getProfileId(), order, biggestOrder);
             doTidy(addToOrder, stagesToTidy);
         }
+    }
+
+    private boolean isNewStage(){
+        if(stage.getId() == 0)
+            return true;
+        return false;
     }
 
     private void doTidy(int addToOrder, List<Stage> stages){

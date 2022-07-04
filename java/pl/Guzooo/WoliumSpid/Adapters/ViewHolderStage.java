@@ -17,9 +17,12 @@ public class ViewHolderStage extends RecyclerView.ViewHolder {
     private TextView title;
     private ImageView volumeIcon;
     private TextView volumeText;
-    private TextView speedStart;
-    private View topArrows;
-    private View centerArrows;
+    private TextView speedNext;
+    private TextView speedBack;
+    private View leftArrow;
+    private View rightArrow;
+    private View leftSkipArrow;
+    private View rightSkipArrow;
     private View active;
 
     public ViewHolderStage(View v){
@@ -27,30 +30,40 @@ public class ViewHolderStage extends RecyclerView.ViewHolder {
         title = v.findViewById(R.id.title);
         volumeIcon = v.findViewById(R.id.volume_image);
         volumeText = v.findViewById(R.id.volume_title);
-        speedStart = v.findViewById(R.id.speed_start);
-        topArrows = v.findViewById(R.id.top_arrows);
-        centerArrows = v.findViewById(R.id.center_arrows);
+        speedNext = v.findViewById(R.id.speed_start);
+        speedBack = v.findViewById(R.id.speed_end);
+        leftArrow = v.findViewById(R.id.left_arrow);
+        rightArrow = v.findViewById(R.id.right_arrow);
+        leftSkipArrow = v.findViewById(R.id.left_shadow_arrow);
+        rightSkipArrow = v.findViewById(R.id.right_shadow_arrow);
         active = v.findViewById(R.id.active);
-        centerArrows.setVisibility(View.INVISIBLE);
     }
 
     public void setStageInfo(Stage stage){
         int order = stage.getOrder();
         int volume = stage.getVolume();
-        float speed = stage.getSpeed();
+        float speedNext = stage.getSpeedNext();
+        float speedBack = stage.getRealSpeedBack();
         boolean active = stage.isActive();
         setTitle(order);
         setVolumeText(volume);
         setVolumeIcon(volume);
-        setSpeed(speed);
+        setSpeedNext(speedNext);
+        setSpeedBack(speedBack);
         setActive(active);
     }
 
-    public void setTopArrows(int position){
-        if(position == 0)
-            topArrows.setVisibility(View.GONE);
-        else
-            topArrows.setVisibility(View.VISIBLE);
+    public void setBottomArrows(boolean isLastStage){
+        if(isLastStage) {
+            rightArrow.setVisibility(View.GONE);
+            speedBack.setVisibility(View.INVISIBLE);
+        } else {
+            rightArrow.setVisibility(View.VISIBLE);
+            speedBack.setVisibility(View.VISIBLE);
+        }
+        rightSkipArrow.setVisibility(View.GONE);
+        leftSkipArrow.setVisibility(View.GONE);
+        //TODO: ostatnia lewa strzałka powinna znikać
     }
 
     public void setOnClickMainViewListener(View.OnClickListener listener){
@@ -76,9 +89,14 @@ public class ViewHolderStage extends RecyclerView.ViewHolder {
             volumeIcon.setImageResource(R.drawable.ic_volume_high);
     }
 
-    private void setSpeed(float speed){
-        String text = getContext().getString(R.string.speed_start, speed);
-        speedStart.setText(text);
+    private void setSpeedNext(float speed){
+        String text = getContext().getString(R.string.speed_next_turn_on, speed);
+        speedNext.setText(text);
+    }
+
+    private void setSpeedBack(float speed){
+        String text = getContext().getString(R.string.speed_back_turn_on, speed);
+        speedBack.setText(text);
     }
 
     private void setActive(boolean isActive){

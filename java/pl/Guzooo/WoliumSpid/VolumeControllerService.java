@@ -79,6 +79,7 @@ public class VolumeControllerService extends LifecycleService {
     @Override
     public void onDestroy() {
         VolumeControllerData.resetAllCurrent();
+
         locationManager.removeUpdates(locationListener);
         super.onDestroy();
     }
@@ -132,10 +133,10 @@ public class VolumeControllerService extends LifecycleService {
         int previewStage = currentStage - 1;
         if(stages.isEmpty())
             return;
-        if(nextStage < stages.size() && compareCurrentSpeed(GREATER_OR_EQUAL_TO, stages.get(nextStage).getSpeed())) {
+        if(nextStage < stages.size() && compareCurrentSpeed(GREATER_OR_EQUAL_TO, stages.get(nextStage).getSpeedNext())) {
             setCurrentStage(nextStage);
             setVolumeByCurrentStage();
-        } else if(previewStage >= 0 && compareCurrentSpeed(SMALLER_THAN, stages.get(currentStage).getSpeed())) {
+        } else if(previewStage >= 0 && compareCurrentSpeed(SMALLER_THAN, stages.get(currentStage).getSpeedNext())) {
             setCurrentStage(previewStage);
             setVolumeByCurrentStage();
         }

@@ -2,87 +2,173 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        tools:text="@string/edit_stage"
+        android:layout_margin="@dimen/margin_standard"
+        app:layout_constraintTop_toTopOf="@id/delete"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/delete"
+        app:layout_constraintBottom_toBottomOf="@id/title_bottom_barrier"
+        style="@style/TextTitle"/>
 
     <ImageView
         android:id="@+id/delete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:src="@drawable/ic_delete"
         android:layout_margin="@dimen/margin_standard"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         style="@style/ClickableImage"/>
 
-    <TextView
-        android:id="@+id/order_title"
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/title_bottom_barrier"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/order"
-        android:layout_margin="@dimen/margin_standard"
-        app:layout_constraintTop_toBottomOf="@id/delete"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/volume_title"
-        style="@style/TextBold"/>
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="title, delete"/>
 
-    <TextView
-        android:id="@+id/volume_title"
-        android:layout_width="wrap_content"
+    <ScrollView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/volume"
-        android:layout_margin="@dimen/margin_standard"
-        app:layout_constraintTop_toBottomOf="@id/delete"
-        app:layout_constraintStart_toEndOf="@id/order_title"
-        app:layout_constraintEnd_toStartOf="@id/speed_title"
-        style="@style/TextBold"/>
+        app:layout_constraintTop_toTopOf="@id/title_bottom_barrier"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-    <TextView
-        android:id="@+id/speed_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/speed"
-        android:layout_margin="@dimen/margin_standard"
-        app:layout_constraintTop_toBottomOf="@id/delete"
-        app:layout_constraintStart_toEndOf="@id/volume_title"
-        app:layout_constraintEnd_toEndOf="parent"
-        style="@style/TextBold"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true">
 
-    <NumberPicker
-        android:id="@+id/order_picker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_standard"
-        app:layout_constraintTop_toBottomOf="@id/order_title"
-        app:layout_constraintStart_toStartOf="@id/order_title"
-        app:layout_constraintEnd_toEndOf="@id/order_title"/>
+            <TextView
+                android:id="@+id/order_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/order"
+                android:layout_margin="@dimen/margin_standard"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/volume_title"
+                style="@style/TextBold"/>
 
-    <NumberPicker
-        android:id="@+id/volume_picker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_standard"
-        app:layout_constraintTop_toBottomOf="@id/volume_title"
-        app:layout_constraintStart_toStartOf="@id/volume_title"
-        app:layout_constraintEnd_toEndOf="@id/volume_title"/>
+            <TextView
+                android:id="@+id/volume_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/volume"
+                android:layout_margin="@dimen/margin_standard"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/order_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                style="@style/TextBold"/>
 
-    <EditText
-        android:id="@+id/speed_edit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="@string/speed_hint"
-        android:inputType="numberDecimal"
-        android:layout_margin="@dimen/margin_standard"
-        app:layout_constraintTop_toBottomOf="@id/speed_title"
-        app:layout_constraintStart_toEndOf="@id/volume_picker"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/volume_picker"
-        style="@style/AllClickable"/>
+            <NumberPicker
+                android:id="@+id/order_picker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_standard"
+                app:layout_constraintTop_toBottomOf="@id/order_title"
+                app:layout_constraintStart_toStartOf="@id/order_title"
+                app:layout_constraintEnd_toEndOf="@id/order_title"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/speed_unit"
-        app:layout_constraintBaseline_toBaselineOf="@id/speed_edit"
-        app:layout_constraintStart_toEndOf="@id/speed_edit"
-        app:layout_constraintEnd_toEndOf="parent"/>
+            <NumberPicker
+                android:id="@+id/volume_picker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_standard"
+                app:layout_constraintTop_toBottomOf="@id/volume_title"
+                app:layout_constraintStart_toStartOf="@id/volume_title"
+                app:layout_constraintEnd_toEndOf="@id/volume_title"/>
+
+            <TextView
+                android:id="@+id/speed_next_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/speed_next"
+                android:layout_margin="@dimen/margin_standard"
+                app:layout_constraintTop_toBottomOf="@id/order_picker"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/speed_back_title"
+                style="@style/TextBold"/>
+
+            <EditText
+                android:id="@+id/speed_next_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/speed_hint"
+                android:inputType="numberDecimal"
+                android:layout_margin="@dimen/margin_standard"
+                app:layout_constraintTop_toBottomOf="@id/speed_next_title"
+                app:layout_constraintStart_toStartOf="parent"
+                style="@style/AllClickable"/>
+
+            <TextView
+                android:id="@+id/speed_unit1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/speed_unit"
+                android:layout_margin="@dimen/margin_standard"
+                app:layout_constraintBaseline_toBaselineOf="@id/speed_next_edit"
+                app:layout_constraintStart_toEndOf="@id/speed_next_edit"/>
+
+            <TextView
+                android:id="@+id/speed_back_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/speed_back"
+                android:layout_marginTop="@dimen/margin_standard"
+                android:layout_marginEnd="@dimen/margin_standard"
+                android:layout_marginRight="@dimen/margin_standard"
+                app:layout_constraintTop_toBottomOf="@id/order_picker"
+                app:layout_constraintStart_toEndOf="@id/speed_next_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                style="@style/TextBold"/>
+
+            <ImageView
+                android:id="@+id/speed_back_help"
+                android:layout_marginRight="@dimen/margin_standard"
+                android:layout_marginEnd="@dimen/margin_standard"
+                app:layout_constraintTop_toTopOf="@id/speed_back_edit"
+                app:layout_constraintBottom_toBottomOf="@id/speed_back_edit"
+                app:layout_constraintEnd_toEndOf="parent"
+                style="@style/HelpImage"/>
+
+            <EditText
+                android:id="@+id/speed_back_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/speed_hint"
+                android:inputType="numberDecimal"
+                android:layout_marginTop="@dimen/margin_standard"
+                app:layout_constraintTop_toBottomOf="@id/speed_back_title"
+                app:layout_constraintStart_toStartOf="@id/speed_back_title"
+                style="@style/AllClickable"/>
+
+            <TextView
+                android:id="@+id/speed_unit2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/speed_unit"
+                android:layout_margin="@dimen/margin_standard"
+                app:layout_constraintBaseline_toBaselineOf="@id/speed_back_edit"
+                app:layout_constraintStart_toEndOf="@id/speed_back_edit"/>
+
+            <TextView
+                android:id="@+id/help_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_standard"
+                android:text="@string/speed_back_help"
+                android:visibility="gone"
+                tools:visibility="visible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/speed_back_edit"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                style="@style/TextDescription"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

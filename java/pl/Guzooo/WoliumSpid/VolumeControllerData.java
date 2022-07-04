@@ -32,7 +32,7 @@ public class VolumeControllerData {
     }
 
     public LiveData<ProfileWithStages> getProfile(int id){
-        if(getCurrentId().getValue() != id) {
+        if(currentId.getValue() != id) {
             profile = repository.getProfile(id);
             getCurrentId().setValue(id);
         }
@@ -77,16 +77,16 @@ public class VolumeControllerData {
     }
 
     public static boolean isWork(){
-        if(getCurrentId().getValue() == UNWORKED_PROFILE)
+        if(currentId.getValue() == UNWORKED_PROFILE)
             return false;
         return true;
     }
 
     public static void resetAllCurrent(){
-        getCurrentId().setValue(UNWORKED_PROFILE);
-        getIsWork().setValue(false);
-        getCurrentTitle().setValue("");
-        getCurrentStage().setValue(VolumeControllerService.CURRENT_STAGE_UNSET);
-        getCurrentSpeed().setValue(0f);
+        currentId.setValue(UNWORKED_PROFILE);
+        isWork.setValue(false);
+        currentTitle.setValue("");
+        currentStage.setValue(VolumeControllerService.CURRENT_STAGE_UNSET);
+        currentSpeed.setValue(0f);
     }
 }

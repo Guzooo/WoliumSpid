@@ -13,8 +13,11 @@ public class Stage implements Comparable<Stage>{
     public static final String ID = "_id";
     public static final String PROFILE_ID = "profile_id";
     public static final String VOLUME = "volume";
-    public static final String SPEED = "speed";
+    public static final String SPEED_NEXT = "speed";
+    public static final String SPEED_BACK = "speed2"; //Added in db version 2.
     public static final String ORDER = "orderr";
+
+    public static final float DEFAULT_SPEED_BACK = -1;
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = ID)
@@ -23,21 +26,29 @@ public class Stage implements Comparable<Stage>{
     private int profileId;
     @ColumnInfo(name = VOLUME)
     private int volume;
-    @ColumnInfo(name = SPEED)
-    private float speed;
+    @ColumnInfo(name = SPEED_NEXT)
+    private float speedNext;
+    @ColumnInfo(name = SPEED_BACK, defaultValue = DEFAULT_SPEED_BACK+"")
+    private float speedBack;
     @ColumnInfo(name = ORDER)
     private int order;
+
+    @Ignore
+    private float realSpeedBack;
     @Ignore
     private boolean active = false;
     @Ignore
-    private boolean skip = false;
+    private boolean skipNext = false;
+    @Ignore
+    private boolean skipBack = false;
 
     public Stage duplicate(){
         Stage clone = new Stage();
         clone.setId(id);
         clone.setProfileId(profileId);
         clone.setVolume(volume);
-        clone.setSpeed(speed);
+        clone.setSpeedNext(speedNext);
+        clone.setSpeedBack(speedBack);
         clone.setOrder(order);
         return clone;
     }
@@ -66,12 +77,23 @@ public class Stage implements Comparable<Stage>{
         this.volume = volume;
     }
 
-    public float getSpeed() {
-        return speed;
+    public float getSpeedNext() {
+        return speedNext;
     }
 
-    public void setSpeed(float speed) {
-        this.speed = speed;
+    public void setSpeedNext(float speed) {
+        this.speedNext = speed;
+    }
+
+    public float getSpeedBack() {
+        return speedBack;
+    }
+
+    public void setSpeedBack(float speed) {
+        speed = addSomeToZero(speed);
+        this.speedBack = speed;
+        if(speed != DEFAULT_SPEED_BACK)
+            realSpeedBack = speed;
     }
 
     public int getOrder() {
@@ -82,6 +104,17 @@ public class Stage implements Comparable<Stage>{
         this.order = order;
     }
 
+    public float getRealSpeedBack() {
+        return realSpeedBack;
+    }
+
+    public void setRealSpeedBack(Stage nextStage) {
+        if(speedBack == DEFAULT_SPEED_BACK)
+            realSpeedBack = addSomeToZero(nextStage.speedNext);
+        else
+            realSpeedBack = speedBack;
+    }
+
     public boolean isActive() {
         return active;
     }
@@ -90,16 +123,30 @@ public class Stage implements Comparable<Stage>{
         this.active = active;
     }
 
-    public boolean isSkip() {
-        return skip;
+    public boolean isSkipNext() {
+        return skipNext;
     }
 
-    public void setSkip(boolean skip) {
-        this.skip = skip;
+    public void setSkipNext(boolean skipNext) {
+        this.skipNext = skipNext;
+    }
+
+    public boolean isSkipBack(){
+        return skipBack;
+    }
+
+    public void setSkipBack(boolean skipBack){
+        this.skipBack = skipBack;
     }
 
     @Override
     public int compareTo(Stage stage) {
         return Integer.compare(order, stage.order);
+    }
+
+    private float addSomeToZero(float speed){
+        if(speed == 0)
+            return 0.01f;
+        return speed;
     }
 }

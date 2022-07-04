@@ -31,9 +31,12 @@ public class AdapterStage extends ListAdapter<Stage, ViewHolderStage> {
     @Override
     public void onBindViewHolder(ViewHolderStage holder, int position) {
         Stage stage = getItem(position);
+        boolean isLastItem = position+1 == getItemCount();
         View.OnClickListener onClickListener = getOnClickListener(stage);
+        if(!isLastItem)
+            stage.setRealSpeedBack(getItem(position+1));
         holder.setStageInfo(stage);
-        holder.setTopArrows(position);
+        holder.setBottomArrows(isLastItem);
         holder.setOnClickMainViewListener(onClickListener);
     }
 
@@ -48,13 +51,13 @@ public class AdapterStage extends ListAdapter<Stage, ViewHolderStage> {
 
             @Override
             public boolean areContentsTheSame(Stage oldItem, Stage newItem) {
-                if(oldItem.getOrder() != newItem.getOrder())
-                    return false;
-                if(oldItem.getVolume() != newItem.getVolume())
-                    return false;
-                if(oldItem.getSpeed() != newItem.getSpeed())
-                    return false;
-                if(oldItem.isActive() != newItem.isActive())
+                if(oldItem.getOrder() != newItem.getOrder() ||
+                        oldItem.getVolume() != newItem.getVolume() ||
+                        oldItem.getSpeedNext() != newItem.getSpeedNext() ||
+                        oldItem.getRealSpeedBack() != newItem.getRealSpeedBack() ||
+                        oldItem.isSkipNext() != newItem.isSkipNext() ||
+                        oldItem.isSkipBack() != newItem.isSkipBack() ||
+                        oldItem.isActive() != newItem.isActive())
                     return false;
                 return true;
             }
@@ -62,11 +65,6 @@ public class AdapterStage extends ListAdapter<Stage, ViewHolderStage> {
     }
 
     private View.OnClickListener getOnClickListener(Stage stage){
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listener.onClick(stage);
-            }
-        };
+        return view -> listener.onClick(stage);
     }
 }

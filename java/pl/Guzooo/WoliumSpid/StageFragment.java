@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.NumberPicker;
+import android.widget.TextView;
 
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
@@ -23,19 +24,26 @@ public class StageFragment extends DialogFragment {
 
     private StageViewModel viewModel;
     private Stage stage;
+    private TextView title;
     private View delete;
     private NumberPicker orderPicker;
     private NumberPicker volumePicker;
-    private EditText speedStart;
+    private EditText speedNext;
+    private EditText speedBack;
+    private View speedBackHelp;
+    private View helpText;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         View layout = getActivity().getLayoutInflater().inflate(R.layout.fragment_stage, null);
         initialization(layout);
+        setTitle();
         setDelete();
         setOrderPicker();
         setVolumePicker();
         setSpeedStart();
+        setSpeedBack();
+        setSpeedBackHelp();
         return getAlertDialog(layout);
     }
 
@@ -46,20 +54,18 @@ public class StageFragment extends DialogFragment {
     private void initialization(View v){
         viewModel = new ViewModelProvider(requireActivity()).get(StageViewModel.class);
         stage = viewModel.getStage();
+        title = v.findViewById(R.id.title);
         delete = v.findViewById(R.id.delete);
         orderPicker = v.findViewById(R.id.order_picker);
         volumePicker = v.findViewById(R.id.volume_picker);
-        speedStart = v.findViewById(R.id.speed_edit);
+        speedNext = v.findViewById(R.id.speed_next_edit);
+        speedBack = v.findViewById(R.id.speed_back_edit);
+        speedBackHelp = v.findViewById(R.id.speed_back_help);
+        helpText = v.findViewById(R.id.help_text);
     }
 
-    private AlertDialog getAlertDialog(View layout){
-        return new AlertDialog.Builder(getContext())
-                .setTitle(getTitleResource())
-                .setView(layout)
-                .setPositiveButton(android.R.string.ok, getPositiveButtonListener())
-                .setNegativeButton(android.R.string.cancel, null)
-                .setNeutralButton(getNeutralButtonTextResource(), getNeutralButtonListener())
-                .create();
+    private void setTitle(){
+        title.setText(getTitleResource());
     }
 
     private void setDelete(){
@@ -74,24 +80,59 @@ public class StageFragment extends DialogFragment {
         int stageOrder = stage.getOrder();
         orderPicker.setMinValue(1);
         orderPicker.setMaxValue(maxOrder);
+        orderPicker.setWrapSelectorWheel(false);
         if(isNewStage())
             orderPicker.setValue(maxOrder);
         else
             orderPicker.setValue(stageOrder);
+        orderPicker.setOnValueChangedListener((numberPicker, oldVal,  newVal) -> {
+            int nextStageOrder;
+            if(!isNewStage() && newVal >= stageOrder)
+                nextStageOrder = newVal+1;
+            else
+                nextStageOrder = newVal;
+            viewModel.refreshNextStageSpeedNext(stage.getProfileId(), nextStageOrder);
+        });
     }
 
     private void setVolumePicker(){
         int maxVolume = VolumeUtils.getVolumeMax(getContext());
         int stageVolume = stage.getVolume();
         volumePicker.setMaxValue(maxVolume);
+        volumePicker.setWrapSelectorWheel(false);
         volumePicker.setValue(stageVolume);
     }
 
     private void setSpeedStart(){
         if(!isNewStage()) {
-            String text = stage.getSpeed() + "";
-            speedStart.setText(text);
+            String text = stage.getSpeedNext() + "";
+            speedNext.setText(text);
         }
+    }
+
+    private void setSpeedBack(){
+        float speed = stage.getSpeedBack();
+        if(!isNewStage() && speed != -1) {
+            String text = speed + "";
+            speedBack.setText(text);
+        }
+        viewModel.refreshNextStageSpeedNext(stage.getProfileId(), orderPicker.getValue()+1);
+        viewModel.getNextStageSpeedNext().observe(this, aFloat -> {
+            speedBack.setHint(aFloat + "");
+        });
+    }
+
+    private void setSpeedBackHelp(){
+        speedBackHelp.setOnClickListener(view -> reverseVisibilityOfHelpText());
+    }
+
+    private AlertDialog getAlertDialog(View layout){
+        return new AlertDialog.Builder(getContext())
+                .setView(layout)
+                .setPositiveButton(android.R.string.ok, getPositiveButtonListener())
+                .setNegativeButton(android.R.string.cancel, null)
+                .setNeutralButton(getNeutralButtonTextResource(), getNeutralButtonListener())
+                .create();
     }
 
     private int getTitleResource(){
@@ -100,15 +141,22 @@ public class StageFragment extends DialogFragment {
         return R.string.edit_stage;
     }
 
+    private void reverseVisibilityOfHelpText(){
+        if(helpText.getVisibility() == View.VISIBLE)
+            setVisibilityOfHelpText(false);
+        else
+            setVisibilityOfHelpText(true);
+    }
+
+    private void setVisibilityOfHelpText(boolean visible){
+        if(visible)
+            helpText.setVisibility(View.VISIBLE);
+        else
+            helpText.setVisibility(View.GONE);
+    }
+
     private DialogInterface.OnClickListener getPositiveButtonListener(){
-        return new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                WSDatabase.getExecutor().execute(() -> {
-                    saveStage();
-                });
-            }
-        };
+        return (dialogInterface, i) -> WSDatabase.getExecutor().execute(this::saveStage);
     }
 
     private int getNeutralButtonTextResource(){
@@ -118,26 +166,20 @@ public class StageFragment extends DialogFragment {
     }
 
     private DialogInterface.OnClickListener getNeutralButtonListener(){
-        return new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dismiss();
-                WSDatabase.getExecutor().execute(() -> {
-                    saveStage();
-                    prepareNewStage();
-                });
-                show(getParentFragmentManager());
-            }
+        return (dialogInterface, i) -> {
+            dismiss();
+            WSDatabase.getExecutor().execute(() -> {
+                saveStage();
+                prepareNewStage();
+            });
+            show(getParentFragmentManager());
         };
     }
 
     private View.OnClickListener getDeleteListener(){
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dismiss();
-                viewModel.deleteStage();
-            }
+        return view -> {
+            dismiss();
+            viewModel.deleteStage();
         };
     }
 
@@ -150,7 +192,8 @@ public class StageFragment extends DialogFragment {
     private void saveStage(){
         stage.setOrder(orderPicker.getValue());
         stage.setVolume(volumePicker.getValue());
-        stage.setSpeed(EditTextUtils.getFloat(speedStart, 0));
+        stage.setSpeedNext(EditTextUtils.getFloat(speedNext, 0));
+        stage.setSpeedBack(EditTextUtils.getFloat(speedBack, -1));
         viewModel.applyStageChange();
     }
 

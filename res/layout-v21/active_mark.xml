@@ -3,15 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
-        android:id="@+id/active"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/active"
         android:textSize="@dimen/text_description"
         android:textColor="?attr/colorGAccent"
         android:background="@drawable/active_border"
-        android:layout_margin="@dimen/margin_standard"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         style="@style/TextBold"/>
 </merge>

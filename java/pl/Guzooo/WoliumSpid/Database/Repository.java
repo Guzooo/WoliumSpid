@@ -80,4 +80,8 @@ public class Repository {
     public List<Stage> getStagesFromOneProfileWithOrderBetween(int profileId, int orderMin, int orderMax){
         return stageDao.getStagesFromOneProfileWithOrderBetween(profileId, orderMin, orderMax);
     }
+
+    public float getSpeedNext(int profileId, int order){
+        return stageDao.getSpeedNext(profileId, order);
+    }
 }

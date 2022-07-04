@@ -28,4 +28,7 @@ public interface StageDao {
 
     @Query("SELECT * FROM " + Stage.DATABASE_NAME + " WHERE " + Stage.PROFILE_ID + " = :profileId AND " + Stage.ORDER + " >= :orderMin AND " + Stage.ORDER + " <= :orderMax")
     List<Stage> getStagesFromOneProfileWithOrderBetween(int profileId, int orderMin, int orderMax);
+
+    @Query("SELECT " + Stage.SPEED_NEXT + " FROM " + Stage.DATABASE_NAME + " WHERE " + Stage.PROFILE_ID + " = :profileId AND " + Stage.ORDER + " = :order")
+    float getSpeedNext(int profileId, int order);
 }
