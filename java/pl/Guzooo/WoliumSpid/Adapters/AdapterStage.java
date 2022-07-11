@@ -7,6 +7,10 @@ import android.view.ViewGroup;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import pl.Guzooo.WoliumSpid.Database.Stage;
 import pl.Guzooo.WoliumSpid.R;
 
@@ -34,6 +38,13 @@ public class AdapterStage extends ListAdapter<Stage, ViewHolderStage> {
         View.OnClickListener onClickListener = view -> listener.onClick(stage);
         holder.setStageInfo(stage);
         holder.setOnClickMainViewListener(onClickListener);
+    }
+
+    public void swapList(int positionOne, int positionTwo){
+        List<Stage> newList = new ArrayList<>();
+        newList.addAll(getCurrentList());
+        Collections.swap(newList, positionOne, positionTwo);
+        submitList(newList);
     }
 
     private static DiffUtil.ItemCallback<Stage> getDiffCallback(){

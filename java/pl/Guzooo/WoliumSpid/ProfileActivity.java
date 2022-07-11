@@ -1,13 +1,10 @@
 package pl.Guzooo.WoliumSpid;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.OnApplyWindowInsetsListener;
 import androidx.core.view.WindowInsetsCompat;
@@ -150,38 +147,8 @@ public class ProfileActivity extends GActivity {
         recyclerStage.setLayoutManager(layoutManager);
         recyclerStage.setAdapter(adapterStage);
 
-        //TODO: dziła względnie poprawnie, mieszają się dwie opcje animacji i przez to dane się dziwnie zachowją
-        /*ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, 0) {
-            boolean dragging = false;
-            int fromPos = -1;
-            int toPos;
-
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                int positionBefore = viewHolder.getAbsoluteAdapterPosition();
-                toPos = target.getAbsoluteAdapterPosition();
-                adapterStage.notifyItemMoved(positionBefore, toPos);
-                if(fromPos == -1)
-                    fromPos = positionBefore;
-                return true;
-            }
-
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-
-            }
-
-            @Override
-            public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
-                dragging = !dragging;
-                if(!dragging) {
-                    stageViewModel.moveStage(id, fromPos, toPos);
-                }
-                super.onSelectedChanged(viewHolder, actionState);
-            }
-
-        });
-        itemTouchHelper.attachToRecyclerView(recyclerStage);*/
+        ItemTouchHelper itemTouchHelper = getTouchHelper();
+        itemTouchHelper.attachToRecyclerView(recyclerStage);
     }
 
     private void setActiveDependence(){
@@ -225,12 +192,12 @@ public class ProfileActivity extends GActivity {
                 finish();
                 return;
             }
-                Profile profile = profileWithStages.getProfile();
-                List<Stage> stages = profileWithStages.getStages();
-                getSupportActionBar().setTitle(profile.getName(getApplicationContext()));
-                titleChanger.setEditText(profile.getName());
-                invalidateOptionsMenu();
-                //TODO: animacja
+            Profile profile = profileWithStages.getProfile();
+            List<Stage> stages = profileWithStages.getStages();
+            getSupportActionBar().setTitle(profile.getName(getApplicationContext()));
+            titleChanger.setEditText(profile.getName());
+            invalidateOptionsMenu();
+            //TODO: animacja
             WSDatabase.getExecutor().execute(() -> {
                 setStagesDependence(stages);
                 adapter.submitList(stages, this::markActiveStages);
@@ -312,5 +279,39 @@ public class ProfileActivity extends GActivity {
                 titleChanger.setEditText(text);
             }
         };
+    }
+
+    private ItemTouchHelper getTouchHelper(){
+        return new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, 0) {
+            boolean dragging = false;
+            int fromPos = -1;
+            int toPos;
+
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                int positionBefore = viewHolder.getAbsoluteAdapterPosition();
+                toPos = target.getAbsoluteAdapterPosition();
+                if(fromPos == -1)
+                    fromPos = positionBefore;
+                adapterStage.swapList(positionBefore, toPos);
+                return true;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+
+            }
+
+            @Override
+            public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
+                dragging = !dragging;
+                if(!dragging && fromPos != -1) {
+                    stageViewModel.moveStage(id, fromPos, toPos);
+                    fromPos = -1;
+                }
+                super.onSelectedChanged(viewHolder, actionState);
+            }
+
+        });
     }
 }
