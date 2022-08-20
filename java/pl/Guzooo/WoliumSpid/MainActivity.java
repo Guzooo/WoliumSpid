@@ -33,7 +33,7 @@ public class MainActivity extends GActivity {
     private AdapterProfile adapterProfile;
     private int lastProfile = -1;
 
-    private MainActivityVolumeControllerHub rightSpace = new MainActivityVolumeControllerHub();
+    private MainActivityRunningProfileHub runningProfileHub = new MainActivityRunningProfileHub();
 
     @Override
     public int getBottomPadding() {
@@ -54,6 +54,13 @@ public class MainActivity extends GActivity {
         setBusinessCard();
         setProfiles();
         setWorkDependence();
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if(hasFocus)
+            runningProfileHub.refreshInfoVisibility(this);
     }
 
     @Override
@@ -78,7 +85,7 @@ public class MainActivity extends GActivity {
         viewModel = new ViewModelProvider(this).get(MainViewModel.class);
         addFAB = findViewById(R.id.add_fab);
         settingsFAB = findViewById(R.id.settings_fab);
-        rightSpace.initialization(this);
+        runningProfileHub.initialization(this);
     }
 
     private void setFullScreen(){
@@ -154,14 +161,12 @@ public class MainActivity extends GActivity {
     }
 
     private void markWorkProfile(){
-        if(VolumeControllerData.getIsWork().getValue()) {
+        setWork(lastProfile, false);
+        if(VolumeControllerData.getIsWork().getValue()) {//TODO: zmienić żeby worka nie było tylko samo ID;
             int activeProfileId = VolumeControllerData.getCurrentId().getValue();
             int activeProfile = adapterProfile.getItemPosition(activeProfileId);
-            setWork(lastProfile, false);
             setWork(activeProfile, true);
             lastProfile = activeProfile;
-        } else {
-            setWork(lastProfile, false);
         }
     }
 

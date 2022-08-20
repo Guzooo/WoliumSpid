@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/running_profile_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_pause"
+        android:layout_marginStart="@dimen/margin_standard"
+        android:layout_marginLeft="@dimen/margin_standard"
+        app:layout_constraintEnd_toEndOf="@id/right_space"
+        app:layout_constraintTop_toTopOf="@id/right_space"
+        app:layout_constraintBottom_toBottomOf="@id/right_space"
+        style="@style/ClickableImage"/>
+
+    <TextView
+        android:id="@+id/running_profile_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_standard"
+        android:ellipsize="end"
+        android:maxLines="1"
+        app:layout_constraintTop_toTopOf="@id/right_space"
+        app:layout_constraintStart_toStartOf="@id/right_space"
+        app:layout_constraintEnd_toStartOf="@id/running_profile_icon"
+        app:layout_constraintBottom_toTopOf="@id/running_profile_text"/>
+
+    <TextView
+        android:id="@+id/running_profile_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/running_profile_title"
+        app:layout_constraintEnd_toStartOf="@id/running_profile_icon"
+        app:layout_constraintStart_toStartOf="@id/right_space"
+        app:layout_constraintBottom_toTopOf="@id/running_profile_info"
+        style="@style/TextDescription"/>
+
+    <TextView
+        android:id="@+id/running_profile_info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_standard"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/running_profile_text"
+        app:layout_constraintEnd_toStartOf="@id/running_profile_icon"
+        app:layout_constraintStart_toStartOf="@id/right_space"
+        app:layout_constraintBottom_toBottomOf="@id/right_space"
+        style="@style/TextDescription"/>
+
+    <View
+        android:id="@+id/running_profile_clickable_space"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clickable="true"
+        app:layout_constraintTop_toTopOf="@id/running_profile_title"
+        app:layout_constraintStart_toStartOf="@id/running_profile_title"
+        app:layout_constraintEnd_toEndOf="@id/running_profile_title"
+        app:layout_constraintBottom_toBottomOf="@id/running_profile_info"/>
+</merge>

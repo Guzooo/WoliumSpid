@@ -9,4 +9,5 @@
 
     <string name="volume_controller_channel_name">Usługa Kontroler Głośności</string>
     <string name="volume_controller_channel_description">Pokazuje, że usługa jest uruchomiona, jej szczegóły i pozwala ją zatrzymać.</string>
+    <string name="volume_controller_channel_disabled">Dotknij, aby włączyć powiadomienia o działającym profilu.</string>
 </resources>

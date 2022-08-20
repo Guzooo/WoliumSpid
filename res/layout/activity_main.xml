@@ -52,45 +52,12 @@
                 android:layout_height="0dp"
                 android:layout_marginRight="@dimen/margin_standard"
                 android:layout_marginEnd="@dimen/margin_standard"
-                android:background="?attr/colorGSecondaryDark"
                 app:layout_constraintBottom_toBottomOf="@id/logo_g"
                 app:layout_constraintEnd_toEndOf="@id/business_card_g"
                 app:layout_constraintStart_toEndOf="@id/logo_g"
                 app:layout_constraintTop_toTopOf="@id/logo_g"/>
 
-            <ImageView
-                android:id="@+id/right_space_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_pause"
-                android:layout_marginStart="@dimen/margin_standard"
-                android:layout_marginLeft="@dimen/margin_standard"
-                app:layout_constraintEnd_toEndOf="@id/right_space"
-                app:layout_constraintTop_toTopOf="@id/right_space"
-                app:layout_constraintBottom_toBottomOf="@id/right_space"
-                style="@style/ClickableImage"/>
-
-            <TextView
-                android:id="@+id/right_space_title"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_standard"
-                android:ellipsize="end"
-                android:maxLines="1"
-                app:layout_constraintTop_toTopOf="@id/right_space"
-                app:layout_constraintStart_toStartOf="@id/right_space"
-                app:layout_constraintEnd_toStartOf="@id/right_space_icon"
-                app:layout_constraintBottom_toTopOf="@id/right_space_text"/>
-
-            <TextView
-                android:id="@+id/right_space_text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/right_space_title"
-                app:layout_constraintEnd_toStartOf="@id/right_space_icon"
-                app:layout_constraintStart_toStartOf="@id/right_space"
-                app:layout_constraintBottom_toBottomOf="@id/right_space"
-                style="@style/TextDescription"/>
+           <include layout="@layout/running_profile_hub"/>
 
             <pl.Guzooo.Base.Elements.BusinessCardG
                 android:id="@+id/business_card_g"
@@ -99,7 +66,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view"

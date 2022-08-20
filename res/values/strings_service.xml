@@ -9,4 +9,5 @@
 
     <string name="volume_controller_channel_name">Volume Controller Service</string>
     <string name="volume_controller_channel_description">Shows that the service is running, its details and lets you terminate it.</string>
+    <string name="volume_controller_channel_disabled">Touch to enable notifications for a worked profile.</string>
 </resources>
